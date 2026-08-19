@@ -1,0 +1,73 @@
+% ---
+% Inserir folha de aprovação
+% ---
+
+% Isto é um exemplo de Folha de aprovação, elemento obrigatório da NBR
+% 14724/2011 (seção 4.2.1.3). Você pode utilizar este modelo até a aprovação
+% do trabalho. Após isso, substitua todo o conteúdo deste arquivo por uma
+% imagem da página assinada pela banca com o comando abaixo:
+%
+% \includepdf{folhadeaprovacao_final.pdf}
+
+\begin{folhadeaprovacao}
+
+%\includepdf{ata_assinada.pdf}
+\setlength{\tabcolsep}{4pt} % Valor padrão é 6pt
+% Cria uma tabela com três colunas
+\hspace{-2.0cm} 
+\begin{tabular}{@{} p{0.1\textwidth} p{0.8\textwidth} p{0.1\textwidth} @{}}
+    % Imagem à esquerda
+    \adjustbox{valign=t}{\includegraphics[width=\linewidth]{figs/mt.png}} &
+    % Texto centralizado
+    \vspace{-1cm}
+    \begin{center}
+        \small \textbf{ESTADO DE MATO GROSSO} \\
+        \small \textbf{UNIVERSIDADE DO ESTADO DE MATO GROSSO} \\
+        \small \textbf{CAMPUS DE SINOP} \\
+        \small \textbf{FACULDADE DE CIÊNCIAS EXATAS E TECNOLÓGICAS} \\
+        \small \textbf{CURSO BACHARELADO EM SISTEMAS DE INFORMAÇÃO} \\
+    \end{center} &
+    % Imagem à direita
+    \adjustbox{valign=t}{\includegraphics[width=\linewidth]{figs/unemat.png}}
+\end{tabular}
+
+% Título da ATA
+\vspace{1cm}
+\begin{center}
+    \textbf{ATA DE TRABALHO DE CONCLUSÃO DE CURSO I}
+\end{center}
+
+% Corpo do texto
+\vspace{1cm}
+Aos 23 (vinte e três) dia(s) do mês de junho de 2023, às 21:05 horas, em sala C8, do \textit{Campus} Aguarela das Artes em Sinop da Universidade do Estado de Mato Grosso, foi realizada a apresentação do pré-projeto de pesquisa do Trabalho de Conclusão de Curso I, do Curso de Sistemas de Informação, do acadêmico \textbf{Victor Costa Melo}, intitulado: \textbf{UMA MÁQUINA DE VENDA AUTOMÁTICA DE BEBIDAS}. A banca avaliadora foi constituída pelos seguintes membros: Prof. Dr. Ivan Luiz Pedroso Pires, convidado, Prof. Me. Francisco Sanches Banhos Filho, convidado, e Prof. Dr. Benevid Felix da Silva, orientador e presidente. Após a apresentação do projeto, a banca avaliadora reuniu-se, e, conforme o que consta no Art. 32, da Resolução nº 030/2012 – CONEPE, atribuiu nota 8,5 (8 inteiros e cinquenta décimos) à monografia, ficando portanto \textbf{APROVADA}. O presidente da banca, após proceder à leitura desta ata, deu por encerrada a sessão, na qual foi lavrada a presente.
+
+\vspace{1.5cm}
+\begin{center}
+    Sinop/MT, 23 de junho de 2023.
+\end{center}
+
+% Assinaturas da banca
+\vspace{1.5cm}
+\begin{center}
+    \textbf{Banca avaliadora:} \\
+    \vspace{0.5cm}
+
+    % Linha de assinatura e nome do orientador
+    \rule{6cm}{0.4pt} \\ % Linha de assinatura (6cm de largura e 0.4pt de espessura)
+    \vspace{0.2cm} % Espaço entre a linha e o nome
+    \textbf{(Orientador) Prof. Dr. Benevid Felix da Silva} \\
+    \vspace{0.8cm} % Espaço entre os membros da banca
+
+    % Linha de assinatura e nome do primeiro convidado
+    \rule{6cm}{0.4pt} \\ % Linha de assinatura
+    \vspace{0.2cm} % Espaço entre a linha e o nome
+    \textbf{(Convidado) Prof. Dr. Ivan Luiz Pedroso Pires} \\
+    \vspace{0.8cm} % Espaço entre os membros da banca
+
+    % Linha de assinatura e nome do segundo convidado
+    \rule{6cm}{0.4pt} \\ % Linha de assinatura
+    \vspace{0.2cm} % Espaço entre a linha e o nome
+    \textbf{(Convidado) Prof. Me. Francisco Sanches Banhos Filho}
+\end{center}
+  
+\end{folhadeaprovacao}
