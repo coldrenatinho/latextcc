@@ -1,7 +1,11 @@
 {
+  "latexStudio.engine": "pdflatex",
+  "editor.rulers": [140],
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 140,
   "latex-workshop.latex.rootFile.useSubFile": false,
   "latex-workshop.latex.autoBuild.run": "onSave",
-  "latex-workshop.latex.recipe.default": "lastUsed",
+  "latex-workshop.latex.recipe.default": "projeto (pdflatex -> bibtex -> makeindex -> pdflatex x2)",
   "latex-workshop.latex.tools": [
     {
       "name": "pdflatex",
@@ -19,14 +23,22 @@
       "args": [
         "%DOCFILE%"
       ]
+    },
+    {
+      "name": "makeindex",
+      "command": "makeindex",
+      "args": [
+        "%DOCFILE%.idx"
+      ]
     }
   ],
   "latex-workshop.latex.recipes": [
     {
-      "name": "pdflatex -> bibtex -> pdflatex x2",
+      "name": "projeto (pdflatex -> bibtex -> makeindex -> pdflatex x2)",
       "tools": [
         "pdflatex",
         "bibtex",
+        "makeindex",
         "pdflatex",
         "pdflatex"
       ]

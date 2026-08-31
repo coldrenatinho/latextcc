@@ -1,128 +1,44 @@
 \chapter{Introdução}
-Durante todo tempo que se conhece a energia elétrica somente uma pessoa  apostou na transmissão  desta pelo ar. Nikola Tesla, famoso cientista austríaco, foi o precursor da transmissão de energia sem fio. Ainda no século XIX Tesla conseguiu acender uma lâmpada sem o uso de  qualquer cabo de energia, através de um processo chamado "indução eletrodinâmica". Em 1988, um grupo de estudos construiu o primeiro protótipo que dispensava cabo de alimentação. Esse tecnologia foi patenteada pela empresa da universidade onde foi recriada. Em 2008, a Intel conseguiu reproduzir os modelos de Tesla com iluminação satisfatória\cite{nikola2007my} \cite{Singh2013}. 
 
+A gestão de estoques é uma atividade relevante para organizações que precisam controlar produtos, materiais, entradas, saídas e disponibilidade de recursos. Apesar da ampla oferta de sistemas, diferentes organizações possuem necessidades, restrições e níveis de complexidade próprios. Nesse contexto, o desenvolvimento de uma solução web constitui uma oportunidade para relacionar demandas do domínio, requisitos, decisões arquiteturais, tecnologias e critérios de qualidade de software.
 
-O processo físico de transmissão da energia elétrica sem a utilização de cabos é exatamente o mesmo realizado nas telecomunicações, com a diferença que o foco da energia é a eficiência da entrega. A eficiência da entrega quer dizer a capacidade que o equipamento tem de converter a energia recebida. Essa garantia ainda tem um custo elevado para ser implantada em larga escala\cite{pi2023int}.
+Este trabalho tem como objeto de estudo o Estoque Fácil, um sistema web para gestão e controle de estoques. O projeto será analisado como estudo de caso de desenvolvimento de software, considerando as demandas que fundamentaram sua concepção, as decisões tecnológicas e arquiteturais adotadas e a avaliação de características de qualidade.
 
-Por isso existe a necessidade de distribuir energia produzida nas usinas, seja ela térmica, hidráulica, termo-nuclear, eólica ou solar... até os centros urbanos, onde a energia é de fato consumida. Desta maneira, surge uma demanda pela  construção das redes de energia elétrica, esta energia sai de seus geradores passa por cabos revestidos e isolados, presos em grandes postes de metal. À este conjunto dá-se o nome de \textit{Rede de Transmissão de Energia Elétrica}, esta rede se confunde com a própria topografia das cidades, pois se divide  por ruas e avenidas para abranger todas as unidades consumidoras\cite{AGENCIANACIONALDEENERGIAELETRICA-ANEEL2016}.
+\section{Problema de pesquisa}
 
-No Brasil a classificação do nível de tensão de operação é medido em Kilo Volt. Para cada faixa de tensão é designada uma linha de transmissão, são elas:
+Soluções de gestão de estoques precisam apoiar o registro e a consulta de informações de forma consistente, compreensível e adequada ao contexto de seus usuários. Entretanto, a simples implementação de funcionalidades não demonstra que uma solução atende aos requisitos, nem explica se suas escolhas arquiteturais e tecnológicas são apropriadas.
 
-\begin{itemize}
-	\item A1 - tensão de fornecimento igual ou superior a 230 kV;
-	\item A2 - tensão de fornecimento de 88kV a 138 kV; e,
-    \item A3 - tensão de fornecimento de 69 kV.
-    
-\end{itemize} 
+Diante disso, formula-se a seguinte questão: \textbf{como projetar, desenvolver e avaliar o sistema web Estoque Fácil a partir de demandas identificadas no domínio, justificando as decisões tecnológicas e arquiteturais adotadas e analisando suas características segundo critérios de qualidade de software?}
 
-O Brasil Conta, em 2015, com mais de 77 milhões de "Unidades Consumidoras" (UC), termo que corresponde ao conjunto de instalação/equipamentos elétricos caracterizados pelo recebimento de energia elétrica em um só ponto de entrada, com medição individualizada e correspondente a um único consumidor. Do total de UCs brasileiras, 85\% são residencias cite{AGENCIANACIONALDEENERGIAELETRICA-ANEEL2016}.
+\section{Pressuposto}
 
-Sabe-se que com uma quantidade tão grande  de UCs o risco de desligamentos forçados (devido a falhas) no \textit{Sistema de Transmissão de Energia} é iminente. Um exemplo são os grandes apagões que aconteceram no ano de 2001 e 2002, derivados da falta de  planejamento da distribuição de energia e dependência brasileira das hidrelétricas. Fato que se repetiu em 2015, porem o motivo foi a má distribuição no fornecimento. A sobrecarga de uma usina enquanto outra próxima tinha sobras nas entrega de energia, ambas na mesma região\cite{apagao}. No período de 1º de agosto de 2014 a 31 de julho de 2015 a ANEEL - Agência Nacional de Energia elétrica realizou uma análise sobre estas falhas.
+Parte-se do pressuposto de que a identificação prévia de demandas, aliada à aplicação de princípios de engenharia de software e à escolha fundamentada de tecnologias e decisões arquiteturais, contribui para o desenvolvimento de uma solução de gestão de estoque adequada aos requisitos definidos para seu contexto de utilização. A pesquisa buscará analisar esse pressuposto ao longo do desenvolvimento e da avaliação do sistema.
 
-Nesta análise foram selecionadas 50 linhas de  transmissão e 28 subestações, responsáveis por 1.142 desligamentos forçados, o que representou 34 \% do total falhas no período\cite{AGENCIANACIONALDEENERGIAELETRICA-ANEEL2016}. As falhas  encontradas  estão distribuídas em  quatro grandes grupos, são eles: 
-meio ambiente, terceiros (Vandalismo, Queimadas e etc), falha humana, falha em componentes e outros (sobrecarga, baixa tensão de fornecimento, poste podre, chave fraca entre outros). Salienta-se que o presente trabalho deverá se concentrar nas falhas providas do grupo: "Falha em componentes e outros"\cite{Abdel2009}.
-
-A própria ANEEL ja está tomando medidas para a diminuição dos desligamentos forçados que englobam as falhas. Desligamentos forçados podem ser entendidos como qualquer fator, desejável ou não que tira a rede de energia de funcionamento \cite{AGENCIANACIONALDEENERGIAELETRICA-ANEEL2016}.
-
-\section{Problemática}
-
-Nos Estados unidos e União Europeia as \textit{Redes de Transmissão de Energia Elétrica} são inteligentes e  implementam modelos de sistemas conhecidos como \textit{Smart Grids} (SG).
-Os SGs começaram com a ideia de obter uma infraestrutura mais avançada para a medição do consumo de energia elétrica, porem com o passar do tempo ficou constatado que essa estrutura proporciona uma gestão energética mais confiável, otimiza a utilização da energia, suporta o fornecimento hibrido e etc. A SG é composta de  alguns  sub-sistemas tais como o gerenciador de falhas que faz o prognóstico das falhas mais comuns na rede e  blinda o sistema contra elas. 
-
-O gerenciador de falhas é parte fundamental de uma Smart Grid pois ele é o sentinela do sistema. Tem o papel de  catalogar  todos os tipos de falhas que já ocorreram na rede  e previnilas quando possível, quando não, deve tolerá-las. O termo tolerar significa que a falha deve ser percebida e tratada ao mesmo tempo que a rede de energia continua executando normalmente. Na maioria dos sistemas de energia não é usual contar com a tolerância pois o fornecimento de energia é algo crucial. Por isso o gerenciador de falhas trabalha pensando sempre no futuro e prevenindo a rede  de cair\cite{Swarup1991}.
-
-Tendo em vista que o gerenciador precisa conhecer as falhas do sistema, é necessário de um mecanismo que possibilite alimentá-lo com as falhas conhecidas e que também permita definir as melhores soluções para cada falha que será ou não encontrada, durante o funcionamento da rede.  O sentinela pode ser implementado com diversos mecanismos de predição, neste trabalho será pesquisado e abordado o uso de Redes Neurais Artificiais (RNAs) híbridas como proposta de solução.
-
-Segundo \citeonline{haykin2000redes}  o trabalho em redes neurais tem sido motivado desde o começo pelo reconhecimento de que o cérebro humano processa informações de uma forma inteiramente diferente do computador convencional. Ele tem a capacidade de organizar seus constituintes estruturais, conhecidos por neurônios, de forma a realizar certos processamentos muito rapidamente. Um exemplo é o sonar de um morcego. O sonar é um sistema ativo do localização por eco. Além de fornecer informação sobre distância pode fornecer o tamanho de várias características do alvo. (Suga, 1990a, b). A complexa computação neural necessária para extrair toda essa informação do eco do alvo ocorre no interior de um cérebro do tamanho de uma ameixa. De fato, um morcego guiado por eco pode perseguir e capturar seu alvo com uma facilidade e taxa de  sucesso que são de causar inveja a um engenheiro de radar.
-
-\textit{Uma rede neural é um processador paralelamente distribuído constituído de unidades de processamento simples, que têm a propensão natural para armazenar conhecimento experimental e torná-lo disponível para uso. Ela se assemelha ao cérebro em dois aspectos:  }
-
-\begin{itemize}
-	\item 1. \textit{O conhecimento é adquirido pela rede a partir de seu ambiente através de um processo de aprendizagem.}
-	\item 2.\textit{ Forças de conexão entre neurônios, conhecidas como pesos sinápticos, são utilizadas para armazenar o conhecimento adquirido."}
-
-\end{itemize}
-
-Atualmente o Brasil tem seu \textit{Sistema de Transmissão de Energia} dividido entre empresas privadas e governo, os quais possuem 60\% e 40\% das linhas de transmissão respectivamente. As medidas  tomadas pelo governo para  diminuir as falhas na rede elétrica apenas dão uma sobrevida ao já arcaico sistema de transmissão que é gerido por eles\cite{AGENCIANACIONALDEENERGIAELETRICA-ANEEL2016}.
-
-O Brasil enfrenta muitos problemas na rede  de energia elétrica atualmente que podem ser minimizados se  implantado um sistema de  gerenciamento de falhas no \textit{Sistema de Transmissão de Energia} similar às Redes Inteligentes de Energia, ou Smart Grids, que vêem sendo implantadas em países de primeiro mundo.
 \section{Objetivo}
-\subsection{ Objetivo Geral}
+\subsection{Objetivo geral}
 
-Desenvolver um modelo baseado em Redes Neurais Artificiais (RNAs) e \textit{Smart Grids} para auxiliar no gerenciamento de falhas no Sistema de Transmissão e Distribuição de Energia Elétrica.
+Projetar, desenvolver e avaliar o software Estoque Fácil, um sistema web para gestão e controle de estoques, a partir da identificação de demandas relacionadas ao domínio, justificando as decisões tecnológicas e arquiteturais adotadas e analisando suas características segundo critérios de qualidade de software.
 
-\subsection{Objetivos Específicos}
-
-Considerando o desenvolvimento do trabalho e o objetivo geral apresentado, destacam-se os seguintes objetivos específicos:
-
+\subsection{Objetivos específicos}
 \begin{itemize}
-	\item Pesquisar sobre gerenciamento de falhas em \textit{Smart Grids};
-	
-    \item Fazer um levantamento das principais falhas de distribuição e baseadas no consumo que levam a queda de energia no Brasil;
-    
-	\item Especificar os dados e  modelar a aplicação de uma RNA híbrida;
-    
-    \item Realizar testes na RNA;
-    \item Analisar os resultados obtidos;
-    \item Publicar os resultados 
-    
+    \item investigar problemas e necessidades relacionados à gestão e ao controle de estoques;
+    \item realizar levantamento bibliográfico sobre gestão de estoques, sistemas de informação, engenharia e qualidade de software;
+    \item identificar e analisar soluções de gestão de estoque existentes;
+    \item levantar e documentar requisitos funcionais e não funcionais para o Estoque Fácil;
+    \item definir e justificar as tecnologias utilizadas no desenvolvimento;
+    \item projetar a arquitetura e o modelo de dados da aplicação;
+    \item desenvolver as funcionalidades definidas para o sistema;
+    \item documentar as principais decisões arquiteturais adotadas;
+    \item estabelecer critérios para avaliação da qualidade do software;
+    \item avaliar o sistema desenvolvido e discutir suas limitações e possibilidades de evolução.
 \end{itemize}
 
 \section{Justificativa}
-O presente trabalho justifica-se pela necessidade de abordar os desafios contemporâneos relacionados à distribuição e consumo de energia elétrica, especialmente no contexto das Redes de Energia Inteligentes, ou Smart Grids. Com o aumento da demanda por energia e a crescente complexidade dos sistemas de distribuição, torna-se essencial desenvolver soluções inovadoras que otimizem a gestão energética, reduzam perdas e promovam o uso eficiente dos recursos disponíveis.
 
+A gestão adequada de estoques contribui para a organização de produtos, a rastreabilidade das movimentações e a tomada de decisão. Sistemas de informação podem centralizar registros e disponibilizar informações para acompanhamento, reduzindo a dependência de controles dispersos.
 
+O desenvolvimento do Estoque Fácil permite estudar o problema sob a perspectiva de Sistemas de Informação e Engenharia de Software, relacionando necessidades do domínio com requisitos, arquitetura, tecnologias e qualidade do produto. Do ponto de vista acadêmico, o trabalho documenta e analisa o processo de desenvolvimento de uma aplicação web real, sem limitar a pesquisa à implementação.
 
+\section{Delimitação}
 
-% Introduzir Figura
-%\begin{figure}
-%	   \centering
-%	   		\includegraphics[scale=0.35]{figs/MPCbase.PNG} 
-%	   \caption{Algoritmo MPC}
-%	   \label{label para referencia cruzada Figura}
-%\end{figure}
-
-
-% Lista de Item
-
-%\begin{itemize}
-%	\item item 1
-%	\item item 2
-%	\item item 3
-%\end{itemize}
-
-% Equação
-%\begin{equation}
-%	\label{label para referencia cruzada %equacoes} 
-%	y(t)=\sum_{i=1}^{\infty}h_i\Delta u(t-i)
-%\end{equation}
-
-% Equação em linha 
-%$\hat{y}(t+k\mid t)= \sum^\infty_{i=1} g_i %\Delta u(t+k-i\mid t)$
-
-% Citação -  Criei o arquivo de bibliografia usando o jabref
-
-%\cite{Camacho2007} 
-
-% Referencia Cruzada de Figura
-%\ref{label para referencia cruzada Figura}
-
-% Referencia Cruzada de Equação
-%\ref{label para referencia cruzada equacoes}
-
-
-% Tabelas
-
-%\begin{table}[h]
-%\begin{center}
-%     \caption{Índices 1 para casos factíveis}
-%     \begin{tabular}{| l | l | l | l |}
-%     \hline Índice & LP Petro & LP 2 & %Diferença\\ 
-%     \hline $SES_y$& 60.5406 & 60.5492 & %-0.0087\\
-%     \hline $SES_u$& 1166.1464 & 1166.1464 & 2.36*$10^{-9}$ \\
-%     \hline
- 
-%    \end{tabular}
-%\label{table:indices1}
-%\end{center}
-%\end{table}
+O estudo será delimitado ao sistema Estoque Fácil e às funcionalidades efetivamente implementadas e documentadas durante o período do TCC. A avaliação será realizada com critérios previamente definidos; não serão inventados resultados de usuários, desempenho ou qualidade que ainda não tenham sido medidos.

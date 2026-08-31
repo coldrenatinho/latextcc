@@ -1,171 +1,69 @@
-\chapter{\textit{Referencial Teórico}}
+\chapter{Referencial teórico}
 
+\section{Gestão e controle de estoques}
 
-\section{Smart Grids}
-As Redes Inteligentes ou \textit{Smart Grids} (SG), em inglês, já são realidade  na Europa, o termo Smart Grids foi usado pela primeira vez em 2005 em um artigo escrito por S. Massound Amin e Bruce F. Wollenberg, publicado pela revista IEEE P\&E, com o título "Toward A Smart Grid"\cite{amin2005toward}. Durante a primeira Conferência Internacional sobre a Integração das Fontes de Energia Distribuída, realizada em 2004 foi criada a  \textit{Plataforma Tecnológica Europeia }(PTE) para as redes de eletricidade do futuro. Em 2006, a PTE apresentou sua visão estratégica para o futuro da rede elétrica europeia, o que incluía a implantação da SG.
+A gestão de estoques envolve o planejamento, o registro e o acompanhamento dos produtos e materiais mantidos por uma organização. Entre as informações relevantes estão o cadastro de itens, categorias, fornecedores, quantidades disponíveis e movimentações de entrada e saída. A qualidade dessas informações influencia o controle operacional e o apoio à tomada de decisão.
 
-A Itália foi pioneira na tentativa de modernização da rede elétrica no início dos anos 2000, um projeto chamado \textit{Telegestone Project}, previu a utilização de cerca de 27 milhões de medidores eletrônicos com capacidade para comunicação via PLC - \textit{Power Line Communications} - que significa transmissão de dados via cabo de energia \cite{energia2012}. Atualmente a PTE tem um programa visando a pesquisa e desenvolvimento de Smart Grids até 2035 \cite{In2015}.
+\section{Sistemas de informação}
 
-Apesar das SGs \cite{piresinteligencia} terem como objetivo inicial medições avançadas, novos requisitos e exigências fizeram a indústria de energia expandir seu escopo de atuação. Em virtude das modificações e evoluções necessárias frente à indústria as SG são para a engenharia e áreas afim um dos grandes desafios dessa nova era tecnológica. Composta de elementos digitais e usufruindo da rede elétrica para  enviar  dados. Conecta todos os usuários, geradores e consumidores com o objetivo de fornecer eletricidade com segurança e estabilidade. 
+Sistemas de informação integram pessoas, processos, dados e tecnologias para coletar, processar, armazenar e disponibilizar informações. No domínio de estoques, uma aplicação web pode centralizar operações e permitir o acesso por diferentes dispositivos, desde que requisitos de segurança, disponibilidade, usabilidade e desempenho sejam considerados.
 
-Com a utilização de sensores e controles automatizados a rede será capaz de antecipar, detectar e resolver problemas no sistema. Podendo evitar faltas de energia ou problemas na qualidade do serviço de transmissão. As informações em tempo real possibilitarão o isolamento das áreas afetadas  e o redirecionamento do fluxo de energia mantendo o maior número possível de consumidores atendidos\cite{energia2012}.
+\section{Engenharia de requisitos}
 
-Haja vista todas essas funcionalidades e elementos, as SGs tem de ser consideradas uma evolução no sistema de energia  e não uma reedição com melhorias. Para  isto se tornar real foi preciso unir o sistema de energia com as Tecnologias da Informação e Comunicação (TIC)\cite{7280756}. Fruto dessa união as SGss devem ser capazes de atender uma lista de requisitos, são eles: 
+A engenharia de requisitos busca compreender necessidades dos envolvidos, documentar comportamentos esperados e estabelecer restrições para a solução \cite{Sommerville2019}. Requisitos funcionais descrevem serviços e operações que o sistema deve oferecer, enquanto requisitos não funcionais tratam de características como segurança, usabilidade, desempenho, confiabilidade, manutenibilidade e portabilidade.
 
-\begin{itemize}
-	\item Auto-Recuperação;
-	\item Resistir a ataques físicos e cibernéticos;
-    \item Fornecer uma energia de melhor qualidade;
-    \item Permitir vários tipos de geração e armazenagem de energia;
-    \item Maior envolvimento do mercado;
-    \item Permitir uma maior utilização de geração intermitente de energia;
+\section{Arquitetura de software}
 
-\end{itemize}
+Arquitetura de software corresponde à organização dos principais componentes de uma solução, suas responsabilidades e relações. A separação entre frontend, backend e banco de dados pode favorecer a organização do sistema, mas exige decisões sobre comunicação, autenticação, validação, persistência, tratamento de erros e implantação. Essas escolhas serão analisadas no Estoque Fácil por meio de decisões arquiteturais documentadas.
 
-Afim de fornecer um paradigma conceitual de um SG a Figura \ref{fig:ModeloConceitual} demonstra os sete campos definidos pelo o Instituto Nacional de Padrões e Tecnologia (INPT).
+\section{Tecnologias do Estoque Fácil}
 
-\begin{figure}[h!]
-	   \centering
-	   		\includegraphics[scale=0.35]{figs/atores.png} 
-	   \caption{Modelo Conceitual INPT}
-	   \label{fig:ModeloConceitual}
-\end{figure}
+O README e a documentação técnica do repositório foram consultados para identificar as tecnologias efetivamente utilizadas, evitando atribuir ao projeto uma arquitetura apenas planejada. O Estoque Fácil é uma aplicação web renderizada no servidor. As requisições são recebidas pelas rotas do FastAPI, que acionam serviços e modelos, consultam o banco por meio do SQLAlchemy e renderizam páginas HTML com Jinja2 e Bootstrap 5. O projeto utiliza Python 3.13, FastAPI, SQLAlchemy, PostgreSQL, Jinja2, Bootstrap 5, Uvicorn, OpenPyXL, Docker e Docker Compose \cite{EstoqueFacilRepositorio}.
 
+\subsection{Python 3.13}
 
+Python foi adotado como linguagem principal por possuir sintaxe legível, sistema de módulos, biblioteca padrão abrangente e amplo ecossistema de pacotes \cite{Python313Docs}. Essas características favorecem a produtividade e a manutenção de uma aplicação desenvolvida por uma equipe pequena. Sua integração direta com FastAPI, SQLAlchemy, OpenPyXL e bibliotecas de segurança reduz a necessidade de combinar diferentes linguagens no núcleo do sistema. Como contraponto, a linguagem não elimina a necessidade de organização arquitetural, testes e monitoramento de desempenho; a escolha é adequada ao escopo de um sistema interno de gestão, mas deve ser reavaliada caso medições futuras revelem gargalos.
 
+\subsection{FastAPI e Uvicorn}
 
+FastAPI é um framework web baseado em anotações de tipo do Python e nos padrões OpenAPI e JSON Schema. Ele oferece mecanismos para definição de rotas, validação, dependências, segurança, tratamento de erros, arquivos estáticos e templates \cite{FastAPIDocs}. No Estoque Fácil, esses recursos sustentam a separação das rotas por módulo, a autenticação, as permissões por perfil e a integração com os serviços de negócio. A escolha reduz código repetitivo e permite que futuras integrações utilizem os mesmos recursos HTTP da aplicação.
 
+Uvicorn é utilizado como servidor ASGI para executar a aplicação FastAPI \cite{UvicornDocs}. Sua adoção é coerente com o framework e possibilita o tratamento das requisições HTTP no ambiente local e nos contêineres. Em produção, o servidor é colocado atrás do Traefik, evitando que fique diretamente responsável por certificados, domínios e roteamento externo.
 
-Entretanto para facilitar a compreensão no ponto de vista técnico alguns autores como \citeauthor{7280756} e  \citeauthor{Fang2012} propõe  modelos conceituais mais concisos. \citeauthor{7280756} define a Smart Grid como uma "equação", data por:
+\subsection{SQLAlchemy e PostgreSQL}
 
-\begin{enumerate}
-\item  Smart Grid = Power Grid + TIC;
-\item  TIC = Smart Sensores + Rede de Comunicação + Computação; 
-\end{enumerate}
+SQLAlchemy realiza o mapeamento entre classes Python e estruturas relacionais, além de controlar sessões, consultas e transações \cite{SQLAlchemyDocs}. A camada de persistência utiliza PostgreSQL tanto no desenvolvimento quanto na produção. Essa uniformidade reduz diferenças de comportamento entre os ambientes, especialmente em tipos de dados, restrições, transações e consultas. O banco de cada ambiente, entretanto, permanece isolado em sua própria pilha Docker, com credenciais e volumes persistentes distintos. O uso de um ORM reduz a quantidade de SQL espalhado pelas rotas e favorece a centralização das regras de acesso aos dados, mas não dispensa conhecimento de SQL, índices, transações ou análise das consultas produzidas.
 
-Onde a soma dos itens 1 e 2 equivale ao \textit{ Sistema Nervoso e Cognitivo de uma Rede de Energia}. Já \citeauthor{Fang2012} sugere uma divisão em três sistemas principais, são eles: Infra-Estrutura, Gestão e Sistemas de Proteção Inteligentes. Para este trabalho será utilizado o modelo proposto por \citeauthor{Fang2012}.
+PostgreSQL foi escolhido como banco principal por oferecer transações, restrições de integridade, controle de concorrência e recursos adequados à centralização de dados relacionais \cite{PostgreSQLDocs}. Essas propriedades são importantes porque entradas, saídas, inventários, lotes e saldos precisam permanecer consistentes mesmo quando diferentes usuários operam o sistema. Sua utilização demanda administração, credenciais, backup e monitoramento, custos operacionais parcialmente organizados pelo Docker Compose e pelo serviço de backup da aplicação.
 
-A Infraestrutura inteligente é de grande importância pois ela suporta um fluxo bidirecional de energia elétrica e informação, isso significa dizer que o fornecimento de energia não segue mais o modelo ortodoxo de envio unidirecional. Portanto na SG a energia elétrica também pode ser colocada de volta na rede por usuários que possuem geradores próprios, por exemplo painéis solarem. Durante o dia uma família que não utiliza a energia elétrica gerada por seus painéis pode fornecer essa energia para a rede e ela fará a Gestão Inteligente  empregando da melhor forma a energia.
+\subsection{Jinja2 e Bootstrap 5}
 
-%--------------------------------------------------------------------
-\subsection{Estado da Arte} 
+Jinja2 é o mecanismo de templates responsável por combinar dados do servidor com documentos HTML \cite{JinjaDocs}. A renderização no servidor foi considerada adequada para um sistema interno centrado em formulários, consultas e relatórios, pois mantém a maior parte das regras e da navegação em uma única aplicação. Em comparação com uma aplicação de página única, essa abordagem reduz a complexidade inicial do frontend e do processo de implantação. Como limitação, interações muito dinâmicas poderão exigir JavaScript adicional ou uma evolução futura da camada de interface.
 
-Dentro da gestão inteligente existem diversas áreas que  empregam Inteligência Artificial (IA). Em \cite{zhang2010next} é mostrado uma Rede Neural Artificial (RNA) que prove um modelo de previsão de carga em curto prazo para  Smart Grids. O sistema proposto tem a  RNA treinada com a técnica de aprendizado baseada em \textit{Backpropagation}. No entanto o desempenho da rede neural é afetado devido a defeitos contidos no gradiente da curva, tais como minimo local, convergência lenta e grande complexidade computacional. 
+Bootstrap 5 fornece componentes visuais, sistema de grade e utilitários responsivos \cite{BootstrapDocs}. No Estoque Fácil, sua utilização acelera a construção de formulários, tabelas, alertas e menus consistentes em diferentes tamanhos de tela. A adoção de um framework visual pode produzir interfaces genéricas ou estilos não utilizados; por isso, o projeto mantém arquivos CSS próprios para identidade visual e ajustes de usabilidade.
 
-No artigo \cite{siano2012real} foi  utilizado um modelo baseado em rede neural, proposto com  a formação adaptativa de rede usando algoritmos genéticos, agrupamento difuso e algoritmo Neuron-by-Neuron para a integração dos algoritmos. Este sistema proporciona melhorias significativas na economia de energia, participação ativa dos clientes no mercado aberto e exploração de recursos energéticos renováveis.  
+\subsection{OpenPyXL}
 
-Já  \cite{jian2009application} salienta o uso de agentes inteligentes para  gerenciar microgrids,  dentro de cada microgrid as unidades contidas são capazes de   operar de forma independente através de  um multi sistema  baseado no controle distribuído. Na mesma linha \cite{kawamata2011study} destaca que com modelos de gerenciamento mais distribuídos é possível gerenciar individualmente a o consumo. Já em \cite{elkalashy2014decentralized} os agentes tem sido usados para  prever e  tolerar falhas no sistema com o método descentralizado de tratamento. Em \cite{gonzalez2015methodology} é discutido o método de  decomposição por estados, uma técnica de otimização descentralizada  para resolver o problema de previsão de estado do sistema. Enquanto  \cite{lu2014distributed} apresenta uma estimativa de estados da rede de energia baseada na coordenação de uma arquitetura de agentes de controle. \cite{eriksson2015multiagent} desenvolveu um agente inteligente baseado em auto-cura para a restauração da rede de energia isolando a parte defeituosa. 
+OpenPyXL permite ler e produzir arquivos de planilha no formato XLSX \cite{OpenPyXLDocs}. A biblioteca atende ao requisito de exportar o estoque atual e as movimentações para uma ferramenta já conhecida por muitas empresas. A planilha exportada funciona como relatório e meio de análise complementar, sem substituir o banco de dados como fonte oficial das informações.
 
-Outra técnica de IA é a programação não linear inteligente, analisada em \cite{paudyal2011optimal} essa técnica de programação inteligente é concebida de modo a maximizar a energia obtida em subestações.  Reduzindo as percas de energia através da limitação do número de operação de comutação. Em \cite{javed2012forecasting} foi feito um estudo  utilizando de um vetor de suporte de rede e maquina de modelo de previsão de curto prazo para  obter um panorama sobre a demanda de respostas dentro da rede inteligente. 
+\subsection{Docker, integração e implantação}
 
-Outra aplicação distinta é mostrada em \cite{bose2010smart},Sistema de Monitoramento Ambiental (EMS) inteligente. Este estudo discuti e analisa a qualidade da rede de transmissão e distribuição de energia  juntamente com sua infraestrutura de informação para lidar com as medições fasoriais onipresentes. O artigo também descreve uma metodologia de transição da rede de energia atual para a Smart Grid e uma gestão eficiente de energia.
-\cite{ricalde2011design} foca seu estudo no modelo de Rede Neural Wavelet (WNN) esse modelo é projetado com base no conhecimento de um sistema multiagentes e é auxiliado por uma previsão de geração de energia utilizando redes neurais. Neste trabalho de investigação foi proposto um modelo de gerenciamento da rede de geração de energia renovável.
+Docker empacota a aplicação e suas dependências em uma imagem, enquanto Docker Compose descreve os serviços web e PostgreSQL, redes, volumes persistentes, variáveis e dependências de inicialização \cite{DockerComposeDocs}. O arquivo \path{docker-compose.yml} permite construir e executar localmente a aplicação e o PostgreSQL. O arquivo \path{docker-compose.prod.yml}, parametrizado por variáveis de ambiente e pela imagem publicada, serve de base para as pilhas remotas de desenvolvimento/homologação e produção. Cada pilha possui projeto Compose, banco e volumes próprios. Essa configuração reduz diferenças entre ambientes e facilita a reconstrução da aplicação. Em contrapartida, contêineres acrescentam uma camada operacional e não substituem rotinas de atualização, backup, observabilidade e proteção dos segredos.
 
-Por fim \cite{hernandez2013multi} emprega uma  Multi-Layer Perceptron (MLP) e  mostra um estudo da gestão inteligente de redes de energia renovável utilizando um conjunto de multiagentes encaixados com a rede  MLP para a previsão de demanda  colaborativa de energia tanto para usuários domésticos quanto  usuários finais. Podemos ver que independente da técnica utilizada as SG sempre são compostas  pelos mesmos elementos já citados. Os estudos apresentados só validam esta afirmação.
+O fluxo de desenvolvimento definido para o projeto começa com a abertura de uma \textit{issue}. A partir dela, o desenvolvedor cria uma branch de funcionalidade ou correção e abre um \textit{pull request} para a branch \texttt{developer}, utilizada como integração e ambiente de desenvolvimento/homologação. O código passa por revisão e, após o aceite do \textit{merge}, por análises e testes. Somente uma versão validada deve ser promovida para a branch \texttt{main}, que representa a produção. Esse fluxo procura impedir que alterações ainda não verificadas sejam implantadas diretamente no ambiente produtivo.
 
-Através da gestão inteligente é possível demonstrar  a revolução nas redes de energia, pois como visto, ela aproveita a infra estrutura inteligente para realizar o controle da emissão energética  reduzindo o custo de operação na base de produção e por conseguinte maximiza a utilização dos recurso disponíveis. Entretanto todo processo de grande complexidade exige um sistema ativo de  proteção, neste caso a proteção é inteligente. 
-%-------------------------------------------------------------------
+O repositório utiliza GitHub Actions para automatizar a construção e a publicação das imagens no GitHub Container Registry \cite{GitHubActionsDocs,GitHubContainerRegistry}. A imagem recebe uma etiqueta associada ao \textit{commit} e outra correspondente à branch. Em seguida, o workflow seleciona as variáveis e os segredos do ambiente, transfere o arquivo Compose para a instância remota e executa a atualização dos contêineres. Dessa maneira, os ambientes integrados utilizam imagens produzidas pelo mesmo processo automatizado, mas mantêm domínios, credenciais, bancos e volumes separados.
 
-\section{Sistema de Gerenciamento de Falhas}
+Na versão do workflow consultada durante a elaboração deste projeto, o gatilho automático ainda referencia \texttt{develop}, embora a configuração interna também reconheça \texttt{developer}. Além disso, não foram identificadas etapas dedicadas de análise estática e testes antes do trabalho de construção e implantação. Portanto, a adequação do gatilho para \texttt{developer} e a inclusão dessas verificações como condição para a promoção à \texttt{main} integram a metodologia proposta para o TCC I. Essa distinção evita apresentar como concluída uma automação que ainda deverá ser implementada e validada.
 
-O sub-sistema de proteção inteligente juntamente com o os  sub-sistemas  citados anteriormente conseguem prover um análise avançada da rede, portanto garantem confiabilidade na entrega tanto de energia quanto de informações. O gerenciamento de falhas também é parte do deste sub sistema e por isso ele fornece serviços de proteção e privacidade.\cite{Fang2012}.
+Na infraestrutura prevista, uma instância Amazon EC2 executa os contêineres, oferecendo capacidade computacional configurável na nuvem \cite{AWSEC2Docs}. O Traefik atua como proxy reverso, encaminhando requisições ao contêiner, separando domínios e habilitando HTTPS \cite{TraefikDocs}. Essas escolhas são justificadas pela infraestrutura já utilizada pelo projeto, e não pela afirmação de que sejam as únicas alternativas possíveis. Serviços gerenciados, outras nuvens ou hospedagem local deverão ser comparados quanto a custo, disponibilidade, conhecimento da equipe e esforço de manutenção.
 
-As tecnologias envolvidas em cada sub sistema podem ser divididas em menores grupos, começando pela exploração e medição inteligente. Os \textit{Smart Meters} são mecanismos importantes para a obtenção de informações. A Infra Estrutura Automática de Medição (IAM) \cite{hart2008using}, é amplamente utilizada junto com o Medidor Automático de Leitura (MAL) \cite{rieken2011ultra}. O MAL consegue recolher automaticamente dados de consumo, ele também é responsável por transferir os dados para um banco de dados central afim de agrupar e solucionar problemas encontrados. Os medidores inteligentes registram o consumo elétrico e enviam essa informação pela rede  em intervalos de  tempo para que não ocorra um congestionamento na rede. Eles se conectam e desconectam apenas quando necessário.
+As decisões serão avaliadas pela relação entre problema, requisito, alternativas, justificativa, implementação, benefício esperado e limitação observada. Dessa forma, a tecnologia não é tratada como finalidade do trabalho, mas como meio para atender requisitos de funcionalidade, segurança, manutenção, portabilidade e implantação.
 
-Tendo em vista que o sistema tem uma grande quantidade de dados para  monitorar tem-se que encontrar formas de manipular estes dados. \cite{Fang2012} cita a  Unidade de Medição Fasorial (UMF) e Rede de Sensores como formas de gerenciar e manipular os dados. 
+\section{Qualidade de software}
 
-Os sensores ou rede de sensores possuem inúmeras aplicações na área de  monitoramento e medição. \cite{len2007application} Propôs que as redes de sensores fossem incorporadas na rede de energia para auxiliar e avaliar as condições mecânicas e elétricas das linhas de transmissão afim de  se obter um diagnóstico físico da rede e uma visão do sistema elétrico, tudo em tempo real. Este diagnóstico ajuda no reconhecimento de falhas iminentes ou permanentes tornando mais fácil resolver os problemas.
+A qualidade de software deve ser analisada em relação a características e critérios observáveis, conforme modelos de qualidade como a ISO/IEC 25010 \cite{ISO25010}. Para este estudo, poderão ser considerados adequação funcional, eficiência de desempenho, compatibilidade, usabilidade, confiabilidade, segurança e manutenibilidade. Os critérios e instrumentos serão definidos antes da avaliação, de acordo com a disponibilidade do sistema e com a orientação acadêmica.
 
-\cite{gungor2010opportunities} estudou a aplicação de uma Rede de Sensores Wireless (RSW) para sistemas de energia. Seu estudo experimentou diferentes sistemas de energia elétrica e concluiu que com a ajuda de uma (RSW), um único sistema de contingência de rede pode encontrar e isolar falhas antes que causem efeitos em cascata. Mais alguns trabalhos sobre aplicação de (RSW) são \citeonline{bressan2010deployment} e \citeonline{gutierrez2006applying}. \citeonline{bressan2010deployment} Embasou sua pesquisa em uma infraestrutura de roteamento sólida utilizando um protocolo de baixo consumo de energia. Em \citeonline{gutierrez2006applying} o foco foi a gestão de energia através de um ciclo fechado da (RSW). 
+\section{Trabalhos e soluções existentes}
 
-Alem dessas características as redes de sensores para um SG tem outros requisitos: i)Restrição de Recursos (bateria), ii) Qualidade do Serviço (Confiabilidade, latência, e througput da rede), iii) Manutenção (remotamente acessível), iv) Segurança.
-
-Outro método para  gerenciar dados em uma SG é a Unidade de Medição Fasorial (UMF). A UMF mede as ondas elétricas de uma rede de energia para determinar a saúde do sistema. Matematicamente falando um fasor é um número complexo que representa ao mesmo tempo magnitude e fase do seno das ondas encontradas na medição \cite{de2010synchronized}. Com os avanços em UMF os operadores do sistema tem como aliado a capacidade de estimar o estado do Sistema Elétrico. Tentando tornar o sistema imune a falhas catastróficas vários países como Brasil, China, França, Japão e Coreia do Sul tem instalado instalado UMF em seus sistemas de energia ou ja estão desenvolvendo protótipos \cite{zhang2010next}.
-
-Rede de Sensores e  Medição Fasorial são métodos bastante empregados em sistemas de energia, porem estes algoritmos dispendem uma grande quantidade de processamento e uma quantia grande de tempo para dar previsões precisas. Uma solução que tem sido bem aceita para previsão e gerenciamento de falhas é a utilização de Redes Neurais Artificiais (RNA). No lugar de complexas regras matemáticas as redes neurais são capazes de  aprender "padrões chave"  dentro de um segmento e ainda tem a vantagem de serem tolerantes à falta \cite{ata2015artificial}. 
-
-Uma rede neural especialista consegue se sobressair na velocidade, simplicidade e capacidade de modelar problemas complexos de múltiplas variáveis podendo extrair relações não lineares por meio de dados de treinamento. As redes neurais têm o potencial para fazer previsões melhores, mais rápidos e mais práticos do que qualquer um dos métodos tradicionais  \cite{kalogirou2006artificial}. 
-
-Redes Neurais tem sido amplamente utilizadas em uma gama de aplicações, elas incluem reconhecimento, otimização e aproximação de resultados, simulação, previsão entre muitas outras áreas. Um setor que vem utilizando com exito as Redes Neurais é  captação energética apartir de  aerogeradores. \cite{bangalore2013approach} utilizou um algoritmo evolutivo para  monitorar em tempo real uma turbina eólica, A RNA utilizada foi construída de modo a gerar seu conjunto de dados de treino, processo automatizado pelo algoritmo. A rede  sincronizou as mudanças da condição de funcionamento da turbina e fez previsão de falhas precisas e confiáveis. 
-
-\cite{yang2008intelligent} mostrou uma RNA com três camadas para diagnosticas falhas na caixa de  velocidades do aerogerador. As características desse processo foram pré-modeladas na rede. Ela contou com nove nós de entrada, cada entrada representa um sensor de vibração instalado em diferentes partes. A RNA proposta foi construída  como (9-10-4), e  foi treinada utilizando o algoritmo \textit{back propagation} com função sigmóide obtendo grande sucesso no diagnóstico proposto. 
-
-\cite{guolian2010research} Desenvolveu um algoritmo de rede para  monitorar falhas no sistema de controle de turbinas eólicas, ele utilizou uma RNA simples e um algoritmo genético. Os algoritmo foram utilizados para explorar e melhorar a velocidade de convergência da rede, o algoritmo genético foi empregado com o objetivo de evitar que a RNA ficasse presa no seu minimo local. A rede proposta contou com um esquema de camadas (6-5-3). Após ser testado para seis tipos de falhas foi validado com grande sucesso.
-
-Em \cite{you2012fault} foi aplicado um recurso de  auto-organização, a Rede Neural auto-organizável (\textit{Self-Organized-Maps - SOM}) para realizar o diagnóstico de falhas no conversor da turbina eólica. A rede SOM é uma rede de duas camas que aceita padrões de N-dimensões como entrada e os mapeia para um conjunto de neurônios de saída, o qual representa o espaço dos dados a serem agrupados. Os pesquisadores utilizaram ferramentas do MatLab para treinar e simular a rede. Os resultados obtidos  mostraram que usando redes do tipo SOM é possível efetivar um diagnóstico confiável para o sistema em questão. 
-
-\cite{schlechtingen2011comparative} em seu trabalho utilizou três modelos implementados usando dados do SCADA online, estes modelos foram comparados utilizando um comportamento normal auto regressivo. Os pesquisadores investigaram a capacidade de identificar a falha incipiente antes da falha real. A comparação dos resultados revelam que  os três modelos apresentam boa capacidade para detectar as falhas incipientes. Entretanto, os três modelos diferem no esforço necessário para o desenvolvimento e no tempo de operação. após a primeira indicação de danos. 
-
-Após o levantamento dos principais trabalhos sobre gerenciamento de falhas com RNA, precisamos englobar  estas informações em nosso escopo de estudo, a rede de distribuição brasileiras e  seus principais motivos de  falha. Portanto a próxima seção é reservada para tratar deste tema.
-
-%\subsection{Descrição do Problema}
-
-%\begin{enumerate}
-%\item  Considerando um sistema de distribuição  trifásico múltiplo.
-
-%\item Consideramos uma falha na linha permanente de qualquer tipo dentro da linha principal.
-
-%\end{enumerate}
-
-%O \textbf{objetivo} desse sistema é o gerenciamento distribuído de forma a isolar falhas no segmento absolutamente minimo.  
-
-
-
-\section{Levantamento das principais Falhas no Brasil}
-
-No Brasil o sistema de  distribuição de energia ainda é o tradicional, portanto as tecnologias de rede de comunicação ainda são as mesmas desde sua primeira instalação. Elas vem funcionando bem, entretanto não serão capazes de  enfrentar as mudanças advindas da implantação de redes inteligentes. Uma premissa básica para  a implementação das Smart Grids é que toda a rede de distribuição até o consumidor final seja completamente automatizada, oposto ao atual cenário\cite{energia2012}.
-
-Em contrapartida, mesmo que o cenário não seja o mais propicio para  a implantação ele vem  atualizando os indicadores de qualidade da rede. A melhora na qualidade é uma das vantagens na implantação das SM, mas para isso precisamos entender quais são as falhas e de que maneiras elas são mensuradas. 
-
-A maioria das interrupções ocorre  nas redes de  distribuição, algo esperado devido a grande capilaridade da rede e a alta exposição ao surgimento de ocorrências. O Brasil conta com cerca de 2 milhões de quilômetros de linhas de  distribuição e 107 mil quilômetros de  linhas de  transmissão. 
-Existem diversas formas de  medir a gravidade de um blecaute: magnitude da demanda interrompida, o tempo de duração, o impacto econômico gerado, o número de consumidores afetados. Independente do critério utilizado, o Brasil se destaca por ter sofrido alguns dos maiores blecautes. A Figura \ref{fig:Blecaute} apresenta alguns dos maiores blecautes ja registrados no mundo em termos de pessoas afetadas. O Brasil tem 2 entre os 8 maiores blecautes de todo o mundo\cite{Lopes2015}. 
-
-\begin{figure}[h!]
-	   \centering
-	   		\includegraphics[scale=0.35]{figs/blecaute_mundo.png} 
-	   \caption{Maiores Blecautes no Mundo}
-	   \label{fig:Blecaute}
-\end{figure}
-
-O sistema elétrico brasileiro é suscetível a blecautes de larga escala devido ao suprimento de energia depender de grandes usinas hidrelétricas muito distantes do centros de carga. Isso exige que as linhas de transmissão fiquem expostas às intempéries por seu grande comprimento. Ademais, devido ao aumento da população e ao crescimento do número de equipamentos em uso nas residências a demanda por energia tem crescido cada vez mais nos últimos anos\cite{InstitutoAcendeBrasil2014}.
-
-A demanda  crescente de energia somada a  infraestrutura frágil tornam-se mais um fator para a ocorrência de  falhas na rede. Alguns dos principais problemas do sistema atual são: 
-
-\begin{itemize}
-\item Geração de energia de forma não-renovável e alteração climáticas: No Brasil como mostra a  Figura \ref{fig:EMmedio}, o uso das termelétricas aumentou, e isso ocorreu devido à falta de  chuvas. As termelétricas agiram para substituir parte da geração hidrelétricas, com isso, ajudaram a poupar água para que a situação brasileira não se agravasse. Mas como eles funcionam por meio da queima de  combustíveis a energia que produzem costuma ser muito mais cara\cite{samadi2010optimal};
-\begin{figure}[h!]
-	   \centering
-	   		\includegraphics[scale=0.35]{figs/em_m_dio.png} 
-	   \caption{Aumento da Utilização de Termelétricas no Brasil}
-	   \label{fig:EMmedio}
-\end{figure}
-
-\item Infraestrutura fragilizada e antiga;
-
-\item Geração de energia centralizada;
-
-\item Aumento da população e crescente demanda de energia;
-
-\item Deterioração da confiança: O sistema elétrico atual é solicitado a ser 99,97\% confiável, mas ainda permite a falta de energia e interrupções {SDG 2008}. A falta de confiabilidade no sistema elétrico atual advém do uso de fontes de energia centralizada e longe dos grandes centros;
-
-\item Fluxo unidirecional de comunicação e de energia: não há interação entre os serviços e os consumidores. O sistema utilizado não permite que o consumidor perceba os reflexos decorrentes da forma de usar a eletricidades e tome decisões de acordo com as informações recebidas; 
-
-\end{itemize}
-
-Estes problemas são a origem das falhas que o sistema inteligente  tem ambição de  tratar. Para dividir em categorias  as  falhas existentes no Brasil, foi utilizado o trabalho \cite{tronchoni2008identificaccao} que tem como objetivo a identificação das causas dos desligamentos não programados. E o trabalho \cite{oprisan1991reliability}  onde foi desenvolvido um sistema para armazenamento de dados sobre interrupção de energia para cálculo do desempenho da rede. No trabalho\cite{oprisan1991reliability} para cada evento ocorrido os dados são armazenados de forma a vincular o desligamento a uma das sete grandes categorias de equipamentos:
-
-\begin{enumerate}
-\item Linha de Distribuição;
-\item Cabo de Distribuição;
-\item Transformador de Distribuição; 
-\item Transformador de Potência;
-\item Chaves;
-\item Reguladores;
-\item Capacitores; 
-\end{enumerate}
-
-
-Sabendo dos problemas que a  rede brasileira enfrenta vemos que os blecautes  tem origem em uma destas 7 categorias, isto será útil para a modelagem do gerenciador. Algumas das métricas para gerenciar as falhas na rede de energia são: tempo de vida, quantidade de tensão, quantidade de corrente, taxa de sobrecarga do componente e  frequência relativa de  acionamento do componente. 
-
-dentro do objetivo do trabalho que segue  
-
+O levantamento de mercado deverá identificar soluções de gestão de estoque e registrar critérios como funcionalidades, público-alvo, facilidade de uso, relatórios, integrações, disponibilidade web, modelo de comercialização e características técnicas publicamente disponíveis. A comparação terá finalidade analítica e não deverá atribuir características que não possam ser verificadas nas fontes consultadas.

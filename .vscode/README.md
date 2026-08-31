@@ -10,7 +10,10 @@ O arquivo principal do trabalho é `projeto.tex`.
 
 No VS Code, abra esta pasta inteira e compile usando a receita:
 
-`pdflatex -> bibtex -> pdflatex x2`
+`projeto (pdflatex -> bibtex -> makeindex -> pdflatex x2)`
+
+Essa sequência gera o PDF, atualiza as referências bibliográficas e atualiza o
+índice remissivo usado por `\makeindex`.
 
 O contador automático de palavras da extensão LaTeX Utilities foi desativado,
 pois o executável `texcount` não está instalado neste ambiente.

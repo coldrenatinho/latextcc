@@ -1,13 +1,44 @@
 \chapter{Metodologia}
 
 \section{Tipo de pesquisa}
+
+Trata-se de uma pesquisa aplicada, de abordagem qualitativa e quantitativa conforme os instrumentos de avaliação utilizados. Quanto aos objetivos, é exploratória e descritiva. Quanto aos procedimentos, combina pesquisa bibliográfica, pesquisa documental, estudo de caso, levantamento de mercado e desenvolvimento de software.
+
+\section{Objeto de estudo}
+
+O objeto de estudo é o Estoque Fácil, sistema web disponibilizado no repositório \url{https://github.com/coldrenatinho/Estoque_Facil}. O repositório será analisado como fonte de evidências sobre funcionalidades, tecnologias, organização do código, arquitetura, histórico de decisões e estado de implementação, respeitando a versão utilizada no período da pesquisa.
+
 \section{Procedimentos metodológicos}
-\section{Aspectos éticos - caso existir}
 
-Descreva como os aspectos éticos foram considerados, especialmente em pesquisas envolvendo seres humanos.
-Mencione a aprovação de comitês de ética, se aplicável.
-Explique como a privacidade e a confidencialidade dos participantes foram garantidas.
+\begin{enumerate}
+    \item \textbf{Fundamentação}: realizar revisão bibliográfica sobre gestão de estoques, sistemas de informação, requisitos, arquitetura web e qualidade de software;
+    \item \textbf{Levantamento de mercado}: selecionar soluções existentes e compará-las com critérios explícitos e fontes verificáveis;
+    \item \textbf{Requisitos}: consolidar necessidades do domínio e documentar requisitos funcionais e não funcionais;
+    \item \textbf{Análise do sistema}: examinar o repositório, a arquitetura, o modelo de dados, os módulos e as tecnologias empregadas;
+    \item \textbf{Desenvolvimento}: implementar ou consolidar funcionalidades priorizadas, registrando decisões e mudanças relevantes;
+    \item \textbf{Integração e entrega}: organizar o trabalho por \textit{issues}, branches e \textit{pull requests}, automatizando análises, testes, construção da imagem e implantação dos ambientes;
+    \item \textbf{Avaliação}: aplicar testes e critérios de qualidade definidos previamente, apresentando evidências e limitações;
+    \item \textbf{Síntese}: discutir os resultados, comparar características selecionadas e indicar possibilidades de evolução.
+\end{enumerate}
 
-\section{Atividades}
+\section{Requisitos e funcionalidades previstas}
 
+Entre os módulos previstos estão autenticação e usuários, produtos, categorias, fornecedores, movimentações de entrada e saída, histórico, relatórios e painel de acompanhamento. A lista final dependerá do estado do sistema e da priorização estabelecida durante o desenvolvimento. Cada requisito deverá possuir identificação, descrição, prioridade e critério de aceitação quando aplicável.
 
+\section{Avaliação}
+
+A avaliação poderá incluir testes funcionais baseados em casos de uso, inspeção de requisitos, análise de características de qualidade, verificação de responsividade e medição de tempos de resposta em cenários controlados. Caso sejam aplicados questionários ou entrevistas, o instrumento, a amostra, o procedimento e as limitações serão descritos antes da apresentação dos resultados. Este projeto não antecipa métricas ainda não coletadas.
+
+\section{Fluxo de desenvolvimento e implantação}
+
+Cada demanda deverá ser registrada em uma \textit{issue} do repositório. O desenvolvimento ocorrerá em uma branch específica, vinculada à demanda, e a integração será solicitada por \textit{pull request} para \texttt{developer}. O aceite dependerá de revisão e dos critérios definidos para a alteração. Após a integração, o sistema será submetido à análise e aos testes no ambiente de desenvolvimento/homologação. A promoção para \texttt{main} ocorrerá somente quando a versão candidata estiver validada, pois essa branch representa o ambiente de produção.
+
+O GitHub Actions será utilizado como mecanismo de integração e entrega contínuas. O pipeline deverá executar as verificações definidas, construir a imagem Docker, publicá-la no GitHub Container Registry e implantar a imagem correspondente ao ambiente. O PostgreSQL será utilizado nos dois ambientes, sem adoção de um banco alternativo no desenvolvimento local. A separação ocorrerá por configurações, segredos, projetos Compose e volumes independentes.
+
+\section{Reprodutibilidade}
+
+Serão registrados o commit ou a versão do sistema, a \textit{issue} relacionada, a imagem Docker produzida, as configurações relevantes, o ambiente utilizado, os casos de teste e os critérios de avaliação. As decisões arquiteturais serão documentadas em estrutura semelhante a: problema, requisito, alternativas, decisão, justificativa, implementação e consequência.
+
+\section{Aspectos éticos}
+
+A pesquisa inicialmente se concentra em software, documentação e soluções públicas, sem necessidade de dados pessoais. Caso envolva usuários, entrevistas ou questionários, serão observados consentimento, privacidade, confidencialidade e as exigências institucionais aplicáveis antes da coleta. Nenhum resultado com participantes será afirmado sem a realização do procedimento correspondente.
