@@ -1,43 +1,65 @@
 \chapter{Introdução}
 
-A gestão de estoques é uma atividade relevante para organizações que precisam controlar produtos, materiais, entradas, saídas e disponibilidade de recursos. Apesar da ampla oferta de sistemas, diferentes organizações possuem necessidades, restrições e níveis de complexidade próprios. Nesse contexto, o desenvolvimento de uma solução web constitui uma oportunidade para relacionar demandas do domínio, requisitos, decisões arquiteturais, tecnologias e critérios de qualidade de software.
+O mercado financeiro produz continuamente grandes volumes de dados relacionados a preços, volume negociado e comportamento dos ativos. No mercado futuro brasileiro, o Minicontrato Futuro de Ibovespa, identificado pelo código WIN, permite exposição às oscilações do Ibovespa com características contratuais próprias definidas pela B3 \cite{B3MiniIbovespa2026}. A elevada frequência de negociação e a natureza temporal desses dados tornam esse mercado um campo relevante para estudos que utilizam técnicas computacionais de análise e classificação.
 
-Este trabalho tem como objeto de estudo o Estoque Fácil, um sistema web para gestão e controle de estoques. O projeto será analisado como estudo de caso de desenvolvimento de software, considerando as demandas que fundamentaram sua concepção, as decisões tecnológicas e arquiteturais adotadas e a avaliação de características de qualidade.
+Aplicações de Machine Learning têm sido investigadas em diferentes mercados com o objetivo de identificar padrões, classificar movimentos de preços e apoiar processos de tomada de decisão. Revisões da literatura mostram uso recorrente de indicadores técnicos, dados históricos e modelos como redes neurais, máquinas de vetores de suporte e outros métodos supervisionados \cite{Kumbure2022,Arun2023}. Entretanto, séries financeiras apresentam ruído, não linearidade, não estacionariedade e mudanças de regime, o que dificulta a generalização de modelos treinados apenas sobre padrões históricos.
+
+No contexto brasileiro, estudos recentes já investigam diretamente contratos de Mini Índice. Souza et al. \cite{Souza2026} avaliaram seleção de atributos e otimização de hiperparâmetros em modelos Random Forest e Multilayer Perceptron para classificação de tendências intraday do WIN. Esse tipo de resultado mostra que o problema possui relevância acadêmica e, ao mesmo tempo, exige desenho experimental cuidadoso para que o desempenho observado não seja confundido com capacidade de previsão garantida.
+
+Diante desse cenário, este trabalho propõe o desenvolvimento e a avaliação de um sistema inteligente de apoio à decisão para traders, utilizando técnicas de Machine Learning aplicadas a dados históricos e indicadores técnicos do Mini Índice. O foco é comparar modelos de classificação e apresentar suas saídas de forma compreensível, sem executar operações automaticamente e sem assumir que qualquer modelo será capaz de produzir lucro de forma consistente.
 
 \section{Problema de pesquisa}
 
-Soluções de gestão de estoques precisam apoiar o registro e a consulta de informações de forma consistente, compreensível e adequada ao contexto de seus usuários. Entretanto, a simples implementação de funcionalidades não demonstra que uma solução atende aos requisitos, nem explica se suas escolhas arquiteturais e tecnológicas são apropriadas.
+Traders que atuam em mercados de curto prazo precisam interpretar informações produzidas em alta velocidade, como variações de preço, volume e indicadores derivados. Embora ferramentas de análise técnica sejam amplamente utilizadas, sua interpretação pode envolver múltiplos sinais simultâneos e diferentes condições de mercado. Técnicas de Machine Learning podem combinar diversas variáveis e produzir classificações baseadas em dados, porém o desempenho desses modelos depende da qualidade dos dados, da definição da variável-alvo, da seleção dos atributos e, principalmente, da forma de validação.
 
-Diante disso, formula-se a seguinte questão: \textbf{como projetar, desenvolver e avaliar o sistema web Estoque Fácil a partir de demandas identificadas no domínio, justificando as decisões tecnológicas e arquiteturais adotadas e analisando suas características segundo critérios de qualidade de software?}
+Além disso, em séries temporais financeiras, uma separação inadequada entre treino e teste pode introduzir vazamento de informação e produzir resultados artificialmente otimistas. Por esse motivo, a avaliação precisa respeitar a ordem temporal dos dados e considerar métricas que permitam analisar o comportamento dos classificadores além da acurácia isolada.
+
+Diante disso, formula-se a seguinte questão de pesquisa:
+
+\begin{quote}
+\textbf{Em que medida modelos de Machine Learning, treinados com dados históricos e indicadores técnicos do Mini Índice (WIN), conseguem classificar a direção do mercado e fornecer informação útil para um sistema de apoio à decisão de traders?}
+\end{quote}
 
 \section{Pressuposto}
 
-Parte-se do pressuposto de que a identificação prévia de demandas, aliada à aplicação de princípios de engenharia de software e à escolha fundamentada de tecnologias e decisões arquiteturais, contribui para o desenvolvimento de uma solução de gestão de estoque adequada aos requisitos definidos para seu contexto de utilização. A pesquisa buscará analisar esse pressuposto ao longo do desenvolvimento e da avaliação do sistema.
+Parte-se do pressuposto de que modelos de Machine Learning podem identificar relações presentes em dados históricos e indicadores técnicos do WIN que contribuam para a classificação de movimentos futuros de alta e baixa. Esse pressuposto será submetido a avaliação experimental e poderá ser confirmado apenas parcialmente ou rejeitado conforme os resultados obtidos em dados não utilizados durante o treinamento.
+
+Não se assume que o mercado seja perfeitamente previsível nem que um classificador com bom desempenho estatístico produza, por si só, rentabilidade econômica. O objetivo é analisar de maneira controlada a capacidade preditiva dos modelos e sua utilidade como componente informacional de um sistema de apoio à decisão.
 
 \section{Objetivo}
+
 \subsection{Objetivo geral}
 
-Projetar, desenvolver e avaliar o software Estoque Fácil, um sistema web para gestão e controle de estoques, a partir da identificação de demandas relacionadas ao domínio, justificando as decisões tecnológicas e arquiteturais adotadas e analisando suas características segundo critérios de qualidade de software.
+Desenvolver e avaliar um sistema inteligente de apoio à decisão para traders, utilizando técnicas de Machine Learning aplicadas a dados históricos e indicadores técnicos do Mini Índice (WIN).
 
 \subsection{Objetivos específicos}
+
 \begin{itemize}
-    \item investigar problemas e necessidades relacionados à gestão e ao controle de estoques;
-    \item realizar levantamento bibliográfico sobre gestão de estoques, sistemas de informação, engenharia e qualidade de software;
-    \item identificar e analisar soluções de gestão de estoque existentes;
-    \item levantar e documentar requisitos funcionais e não funcionais para o Estoque Fácil;
-    \item definir e justificar as tecnologias utilizadas no desenvolvimento;
-    \item projetar a arquitetura e o modelo de dados da aplicação;
-    \item desenvolver as funcionalidades definidas para o sistema;
-    \item documentar as principais decisões arquiteturais adotadas;
-    \item estabelecer critérios para avaliação da qualidade do software;
+    \item realizar revisão bibliográfica sobre Mini Índice, séries temporais financeiras, indicadores técnicos e Machine Learning;
+    \item selecionar e documentar uma fonte de dados históricos do WIN adequada ao experimento;
+    \item preparar, organizar e explorar os dados preservando sua ordem temporal;
+    \item construir atributos derivados de preço, retorno, volume e indicadores técnicos;
+    \item definir formalmente a variável-alvo utilizada para representar movimentos de alta e baixa;
+    \item implementar um modelo de referência e modelos de Machine Learning selecionados para comparação;
+    \item dividir os dados cronologicamente em conjuntos de treinamento, validação e teste;
+    \item avaliar os modelos com métricas de classificação adequadas ao problema;
+    \item analisar possíveis sinais de overfitting, instabilidade e limitações de generalização;
+    \item desenvolver um protótipo capaz de apresentar resultados e indicadores de forma compreensível para apoio à decisão;
+    \item documentar dados, parâmetros, código e procedimentos para favorecer a reprodutibilidade da pesquisa.
 \end{itemize}
 
 \section{Justificativa}
 
-A gestão adequada de estoques contribui para a organização de produtos, a rastreabilidade das movimentações e a tomada de decisão. Sistemas de informação podem centralizar registros e disponibilizar informações para acompanhamento, reduzindo a dependência de controles dispersos.
+O tema reúne aspectos de Sistemas de Informação, inteligência artificial, análise de dados e desenvolvimento de software em um problema aplicado ao mercado financeiro brasileiro. O WIN é um derivativo diretamente relacionado ao Ibovespa e possui especificações próprias de negociação estabelecidas pela B3 \cite{B3MiniIbovespa2026}, tornando possível delimitar o objeto de estudo a um único instrumento financeiro e reduzir a dispersão do escopo.
 
-O desenvolvimento do Estoque Fácil permite estudar o problema sob a perspectiva de Sistemas de Informação e Engenharia de Software, relacionando necessidades do domínio com requisitos, arquitetura, tecnologias e qualidade do produto. Do ponto de vista acadêmico, o trabalho documenta e analisa o processo de desenvolvimento de uma aplicação web real, sem limitar a pesquisa à implementação.
+Do ponto de vista científico, a literatura indica que modelos de Machine Learning são amplamente utilizados para tarefas de previsão e classificação em mercados financeiros, mas os resultados dependem fortemente dos dados, atributos, técnicas de preparação e protocolo de avaliação \cite{Kumbure2022}. A existência de pesquisa recente aplicada especificamente ao Mini Índice brasileiro \cite{Souza2026} reforça a pertinência do problema e fornece uma referência direta para comparação metodológica.
+
+Do ponto de vista de Sistemas de Informação, o trabalho não se limita ao treinamento de algoritmos. A proposta inclui organizar um fluxo de dados, aplicar modelos, avaliar resultados e apresentar informações em um protótipo de apoio à decisão. Dessa forma, o projeto integra processamento de dados, inteligência computacional e apresentação da informação ao usuário final.
 
 \section{Delimitação}
 
-O estudo será delimitado ao sistema Estoque Fácil e às funcionalidades efetivamente implementadas e documentadas durante o período do TCC. A avaliação será realizada com critérios previamente definidos; não serão inventados resultados de usuários, desempenho ou qualidade que ainda não tenham sido medidos.
+O estudo será delimitado ao Minicontrato Futuro de Ibovespa (WIN). Mini Dólar, criptomoedas, ações individuais e outros instrumentos não fazem parte do escopo principal desta etapa.
+
+O problema será tratado prioritariamente como uma tarefa de classificação de direção, com classes definidas de acordo com um horizonte temporal previamente fixado e documentado antes do treinamento final. Serão utilizados apenas atributos que possam ser obtidos ou calculados a partir das fontes de dados selecionadas, como preços, retornos, volume e indicadores técnicos.
+
+O sistema proposto terá finalidade acadêmica e de apoio à decisão. Não executará ordens de compra ou venda automaticamente, não será apresentado como recomendação de investimento e não terá como critério de sucesso a garantia de lucro. O principal resultado esperado é uma comparação metodologicamente consistente entre modelos e a demonstração de como suas saídas podem ser incorporadas a uma ferramenta de apoio ao trader.

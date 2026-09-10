@@ -1,44 +1,100 @@
 \chapter{Metodologia}
 
-\section{Tipo de pesquisa}
+\section{Classificação da pesquisa}
 
-Trata-se de uma pesquisa aplicada, de abordagem qualitativa e quantitativa conforme os instrumentos de avaliação utilizados. Quanto aos objetivos, é exploratória e descritiva. Quanto aos procedimentos, combina pesquisa bibliográfica, pesquisa documental, estudo de caso, levantamento de mercado e desenvolvimento de software.
+Este trabalho caracteriza-se como uma pesquisa de natureza aplicada, pois busca utilizar técnicas de Machine Learning em um problema prático relacionado à análise do Mini Índice (WIN). A abordagem será predominantemente quantitativa, uma vez que o desempenho dos modelos será medido por métricas numéricas obtidas em experimentos controlados.
+
+Quanto aos objetivos, a pesquisa possui caráter exploratório e experimental. É exploratória por investigar diferentes representações dos dados, indicadores e algoritmos; e experimental porque os modelos serão treinados e comparados sob um protocolo previamente definido. A pesquisa também utilizará revisão bibliográfica para fundamentar conceitos, técnicas e trabalhos relacionados.
 
 \section{Objeto de estudo}
 
-O objeto de estudo é o Estoque Fácil, sistema web disponibilizado no repositório \url{https://github.com/coldrenatinho/Estoque_Facil}. O repositório será analisado como fonte de evidências sobre funcionalidades, tecnologias, organização do código, arquitetura, histórico de decisões e estado de implementação, respeitando a versão utilizada no período da pesquisa.
+O objeto de estudo é o Minicontrato Futuro de Ibovespa (WIN), negociado na B3. As especificações oficiais do instrumento serão utilizadas como referência para sua caracterização \cite{B3MiniIbovespa2026}.
 
-\section{Procedimentos metodológicos}
+O experimento utilizará dados históricos organizados temporalmente. A fonte definitiva dos dados, o período analisado e a granularidade temporal serão registrados no trabalho antes da execução da avaliação final, de forma a permitir a reprodução do procedimento e evitar conclusões baseadas em informações cuja origem não possa ser verificada.
+
+\section{Etapas da pesquisa}
 
 \begin{enumerate}
-    \item \textbf{Fundamentação}: realizar revisão bibliográfica sobre gestão de estoques, sistemas de informação, requisitos, arquitetura web e qualidade de software;
-    \item \textbf{Levantamento de mercado}: selecionar soluções existentes e compará-las com critérios explícitos e fontes verificáveis;
-    \item \textbf{Requisitos}: consolidar necessidades do domínio e documentar requisitos funcionais e não funcionais;
-    \item \textbf{Análise do sistema}: examinar o repositório, a arquitetura, o modelo de dados, os módulos e as tecnologias empregadas;
-    \item \textbf{Desenvolvimento}: implementar ou consolidar funcionalidades priorizadas, registrando decisões e mudanças relevantes;
-    \item \textbf{Integração e entrega}: organizar o trabalho por \textit{issues}, branches e \textit{pull requests}, automatizando análises, testes, construção da imagem e implantação dos ambientes;
-    \item \textbf{Avaliação}: aplicar testes e critérios de qualidade definidos previamente, apresentando evidências e limitações;
-    \item \textbf{Síntese}: discutir os resultados, comparar características selecionadas e indicar possibilidades de evolução.
+    \item \textbf{Revisão bibliográfica}: levantar trabalhos sobre Mini Índice, Ibovespa, séries temporais financeiras, indicadores técnicos, Machine Learning e sistemas de apoio à decisão;
+    \item \textbf{Aquisição dos dados}: selecionar uma fonte adequada de dados históricos do WIN e registrar período, periodicidade, campos disponíveis e eventuais restrições de uso;
+    \item \textbf{Preparação}: ordenar os registros temporalmente, tratar ausências e inconsistências, calcular retornos e padronizar o formato utilizado pelo pipeline;
+    \item \textbf{Construção de atributos}: gerar variáveis derivadas de preços e volume, incluindo indicadores técnicos selecionados;
+    \item \textbf{Definição do alvo}: estabelecer uma regra objetiva para classificar o movimento futuro do mercado em alta ou baixa dentro de um horizonte temporal fixado;
+    \item \textbf{Separação temporal}: dividir os dados cronologicamente em treinamento, validação e teste, mantendo o conjunto final de teste isolado durante o desenvolvimento;
+    \item \textbf{Treinamento}: ajustar um modelo de referência e os algoritmos de Machine Learning selecionados;
+    \item \textbf{Avaliação}: calcular métricas de classificação e analisar erros, estabilidade e sinais de overfitting;
+    \item \textbf{Protótipo}: desenvolver uma interface para apresentar previsões, probabilidades ou escores e indicadores relevantes ao usuário;
+    \item \textbf{Síntese}: comparar os resultados, discutir limitações e registrar possibilidades de evolução.
 \end{enumerate}
 
-\section{Requisitos e funcionalidades previstas}
+\section{Dados e atributos}
 
-Entre os módulos previstos estão autenticação e usuários, produtos, categorias, fornecedores, movimentações de entrada e saída, histórico, relatórios e painel de acompanhamento. A lista final dependerá do estado do sistema e da priorização estabelecida durante o desenvolvimento. Cada requisito deverá possuir identificação, descrição, prioridade e critério de aceitação quando aplicável.
+O conjunto inicial deverá conter, quando disponíveis, informações de abertura, máxima, mínima, fechamento e volume. A partir desses valores poderão ser construídos atributos como retorno percentual, amplitude do candle, médias móveis, volatilidade móvel, RSI, MACD e outras variáveis técnicas justificadas pela literatura.
 
-\section{Avaliação}
+A literatura mostra que indicadores técnicos são frequentemente utilizados como atributos em estudos de previsão de mercados com Machine Learning \cite{Kumbure2022}. No entanto, a quantidade final de variáveis será controlada para reduzir redundância e complexidade desnecessária. Caso sejam aplicadas técnicas de seleção de atributos, elas deverão ser ajustadas apenas com dados de treinamento, evitando uso indireto de informações do conjunto de teste.
 
-A avaliação poderá incluir testes funcionais baseados em casos de uso, inspeção de requisitos, análise de características de qualidade, verificação de responsividade e medição de tempos de resposta em cenários controlados. Caso sejam aplicados questionários ou entrevistas, o instrumento, a amostra, o procedimento e as limitações serão descritos antes da apresentação dos resultados. Este projeto não antecipa métricas ainda não coletadas.
+\section{Definição da variável-alvo}
 
-\section{Fluxo de desenvolvimento e implantação}
+O problema principal será formulado como classificação binária da direção do mercado. Para cada instante de referência, será calculado o movimento observado após um horizonte temporal previamente definido. A regra exata de rotulagem, incluindo eventual limiar mínimo de variação, será determinada antes do treinamento final e documentada no experimento.
 
-Cada demanda deverá ser registrada em uma \textit{issue} do repositório. O desenvolvimento ocorrerá em uma branch específica, vinculada à demanda, e a integração será solicitada por \textit{pull request} para \texttt{developer}. O aceite dependerá de revisão e dos critérios definidos para a alteração. Após a integração, o sistema será submetido à análise e aos testes no ambiente de desenvolvimento/homologação. A promoção para \texttt{main} ocorrerá somente quando a versão candidata estiver validada, pois essa branch representa o ambiente de produção.
+Essa definição evita alterar o alvo após observar os resultados dos modelos e permite comparar todos os algoritmos sob a mesma tarefa. Trabalhos relacionados também formulam a previsão de tendências financeiras como problema de classificação \cite{Patel2015,Souza2026}.
 
-O GitHub Actions será utilizado como mecanismo de integração e entrega contínuas. O pipeline deverá executar as verificações definidas, construir a imagem Docker, publicá-la no GitHub Container Registry e implantar a imagem correspondente ao ambiente. O PostgreSQL será utilizado nos dois ambientes, sem adoção de um banco alternativo no desenvolvimento local. A separação ocorrerá por configurações, segredos, projetos Compose e volumes independentes.
+\section{Modelos candidatos}
 
-\section{Reprodutibilidade}
+O experimento deverá incluir inicialmente uma Regressão Logística como baseline, Random Forest e XGBoost. Uma Multilayer Perceptron poderá ser adicionada para comparar um modelo de rede neural com métodos baseados em árvores. A utilização de arquiteturas recorrentes, como LSTM, será considerada apenas se houver tempo, volume de dados e justificativa experimental suficientes.
 
-Serão registrados o commit ou a versão do sistema, a \textit{issue} relacionada, a imagem Docker produzida, as configurações relevantes, o ambiente utilizado, os casos de teste e os critérios de avaliação. As decisões arquiteturais serão documentadas em estrutura semelhante a: problema, requisito, alternativas, decisão, justificativa, implementação e consequência.
+Random Forest foi selecionado por sua capacidade de modelar relações não lineares e por possuir aplicação direta em estudo recente com o WIN \cite{Breiman2001,Souza2026}. XGBoost será considerado por sua eficiência em problemas tabulares e mecanismos de regularização \cite{Chen2016}. A MLP permitirá verificar se uma rede neural simples oferece ganho em relação aos modelos tradicionais sem tornar a arquitetura do projeto dependente de Deep Learning.
 
-\section{Aspectos éticos}
+\section{Separação dos dados e validação}
 
-A pesquisa inicialmente se concentra em software, documentação e soluções públicas, sem necessidade de dados pessoais. Caso envolva usuários, entrevistas ou questionários, serão observados consentimento, privacidade, confidencialidade e as exigências institucionais aplicáveis antes da coleta. Nenhum resultado com participantes será afirmado sem a realização do procedimento correspondente.
+A divisão dos dados respeitará a ordem cronológica. Não será realizado embaralhamento aleatório entre períodos passados e futuros para formar treino e teste. A divisão inicial será estruturada em três blocos:
+
+\begin{itemize}
+    \item \textbf{treinamento}: utilizado para ajuste dos parâmetros do modelo;
+    \item \textbf{validação}: utilizado para seleção de hiperparâmetros e comparação durante o desenvolvimento;
+    \item \textbf{teste}: período final reservado para avaliação do modelo escolhido.
+\end{itemize}
+
+A proporção exata dependerá da quantidade de dados disponíveis e será registrada antes da avaliação final. Quando apropriado, poderá ser adotada validação do tipo walk-forward ou divisão temporal em múltiplas janelas, desde que todas as etapas preservem a causalidade temporal.
+
+Normalização, seleção de atributos, cálculo de estatísticas de escala e ajuste de hiperparâmetros deverão ser realizados sem utilizar o período reservado ao teste final. Essa regra busca reduzir o risco de \textit{data leakage}.
+
+\section{Métricas de avaliação}
+
+O desempenho dos classificadores será analisado por um conjunto de métricas, incluindo:
+
+\begin{itemize}
+    \item Accuracy;
+    \item Precision;
+    \item Recall;
+    \item F1-score;
+    \item Balanced Accuracy;
+    \item ROC-AUC, quando aplicável;
+    \item matriz de confusão.
+\end{itemize}
+
+O uso de múltiplas métricas evita que uma única medida esconda comportamentos relevantes, especialmente quando houver desequilíbrio entre classes. Também será comparado o desempenho com um baseline simples, permitindo avaliar se a complexidade adicional dos modelos produz ganho mensurável.
+
+\section{Análise complementar por backtest}
+
+Caso o cronograma permita, as saídas do classificador poderão ser utilizadas em um backtest exploratório. Essa etapa será complementar à avaliação principal e somente será apresentada se as regras forem definidas antes da análise dos resultados.
+
+Nesse cenário, deverão ser registrados critérios de entrada e saída, custos de operação, tamanho de posição, período analisado e demais pressupostos. Resultados de backtest não serão tratados como garantia de desempenho futuro.
+
+\section{Protótipo de apoio à decisão}
+
+Após a avaliação dos modelos, será desenvolvido um protótipo capaz de apresentar ao usuário informações como direção estimada, probabilidade ou escore do modelo, indicadores técnicos utilizados e data de referência da previsão. A interface deverá priorizar clareza e rastreabilidade das informações.
+
+O protótipo não enviará ordens a corretoras e não substituirá a decisão humana. Sua finalidade será demonstrar a integração entre dados, modelo preditivo e apresentação da informação dentro de um sistema de apoio à decisão.
+
+\section{Tecnologias e reprodutibilidade}
+
+A implementação será realizada prioritariamente em Python. Bibliotecas de manipulação de dados e Machine Learning poderão incluir Pandas, NumPy, scikit-learn e XGBoost, de acordo com os modelos efetivamente utilizados. O código-fonte, arquivos de configuração, requisitos de ambiente e scripts reproduzíveis deverão ser mantidos em controle de versão.
+
+Cada experimento deverá registrar, sempre que aplicável, período dos dados, conjunto de atributos, regra de rotulagem, modelo, hiperparâmetros, métricas e versão do código. Seeds aleatórias serão fixadas quando a biblioteca utilizada oferecer esse recurso.
+
+\section{Aspectos éticos e limitações}
+
+A pesquisa utiliza dados de mercado e não prevê, inicialmente, coleta de dados pessoais. Caso alguma etapa futura envolva participantes humanos, questionários ou entrevistas, os procedimentos institucionais aplicáveis deverão ser observados antes da coleta.
+
+Uma limitação central é que resultados obtidos em dados históricos não garantem comportamento equivalente em períodos futuros. Mudanças de regime, custos de transação, latência, liquidez e outros fatores podem reduzir o desempenho observado. Por isso, as conclusões serão restritas ao protocolo experimental e ao período de dados efetivamente analisado.

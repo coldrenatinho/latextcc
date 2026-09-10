@@ -1,69 +1,77 @@
 \chapter{Referencial teórico}
 
-\section{Gestão e controle de estoques}
+\section{Mercado financeiro e contratos futuros}
 
-A gestão de estoques envolve o planejamento, o registro e o acompanhamento dos produtos e materiais mantidos por uma organização. Entre as informações relevantes estão o cadastro de itens, categorias, fornecedores, quantidades disponíveis e movimentações de entrada e saída. A qualidade dessas informações influencia o controle operacional e o apoio à tomada de decisão.
+Contratos futuros são instrumentos derivativos cujo valor está relacionado a um ativo ou índice de referência e cuja negociação ocorre sob regras padronizadas da bolsa. Esses instrumentos podem ser utilizados para exposição direcional, proteção de risco e outras estratégias. No Brasil, a B3 administra os contratos futuros relacionados ao Ibovespa e estabelece suas características de negociação, vencimento e liquidação \cite{B3MiniIbovespa2026}.
 
-\section{Sistemas de informação}
+\section{Minicontrato Futuro de Ibovespa}
 
-Sistemas de informação integram pessoas, processos, dados e tecnologias para coletar, processar, armazenar e disponibilizar informações. No domínio de estoques, uma aplicação web pode centralizar operações e permitir o acesso por diferentes dispositivos, desde que requisitos de segurança, disponibilidade, usabilidade e desempenho sejam considerados.
+O Minicontrato Futuro de Ibovespa é identificado pelo código de negociação WIN e possui o Ibovespa como objeto de referência. Segundo a B3, cada ponto do contrato corresponde a R\$ 0,20, a variação mínima de apregoação é de cinco pontos e os vencimentos ocorrem nos meses pares \cite{B3MiniIbovespa2026}. O instrumento permite exposição às variações do principal índice do mercado acionário brasileiro sem exigir a negociação individual das ações que compõem a carteira teórica do Ibovespa.
 
-\section{Engenharia de requisitos}
+Para este trabalho, o WIN é utilizado como objeto de estudo porque combina relevância no mercado brasileiro, disponibilidade de observações temporais e aplicação direta de técnicas de análise de dados. O objetivo não é avaliar a adequação do produto como investimento, mas estudar se padrões derivados de dados históricos podem ser úteis em uma tarefa de classificação supervisionada.
 
-A engenharia de requisitos busca compreender necessidades dos envolvidos, documentar comportamentos esperados e estabelecer restrições para a solução \cite{Sommerville2019}. Requisitos funcionais descrevem serviços e operações que o sistema deve oferecer, enquanto requisitos não funcionais tratam de características como segurança, usabilidade, desempenho, confiabilidade, manutenibilidade e portabilidade.
+\section{Séries temporais financeiras}
 
-\section{Arquitetura de software}
+Uma série temporal é formada por observações ordenadas no tempo. Em mercados financeiros, preços, retornos, máximas, mínimas, abertura, fechamento e volume podem ser representados dessa forma. A ordem das observações é parte essencial do problema e não deve ser ignorada durante a preparação dos dados ou a avaliação dos modelos.
 
-Arquitetura de software corresponde à organização dos principais componentes de uma solução, suas responsabilidades e relações. A separação entre frontend, backend e banco de dados pode favorecer a organização do sistema, mas exige decisões sobre comunicação, autenticação, validação, persistência, tratamento de erros e implantação. Essas escolhas serão analisadas no Estoque Fácil por meio de decisões arquiteturais documentadas.
+Séries financeiras apresentam características que tornam a previsão especialmente difícil, entre elas ruído elevado, relações não lineares, mudanças de regime e não estacionariedade. Revisões sobre previsão de mercados com Machine Learning apontam que dados históricos e indicadores técnicos estão entre as fontes mais utilizadas, mas também evidenciam grande diversidade de métodos e resultados \cite{Kumbure2022,Arun2023}.
 
-\section{Tecnologias do Estoque Fácil}
+\section{Machine Learning}
 
-O README e a documentação técnica do repositório foram consultados para identificar as tecnologias efetivamente utilizadas, evitando atribuir ao projeto uma arquitetura apenas planejada. O Estoque Fácil é uma aplicação web renderizada no servidor. As requisições são recebidas pelas rotas do FastAPI, que acionam serviços e modelos, consultam o banco por meio do SQLAlchemy e renderizam páginas HTML com Jinja2 e Bootstrap 5. O projeto utiliza Python 3.13, FastAPI, SQLAlchemy, PostgreSQL, Jinja2, Bootstrap 5, Uvicorn, OpenPyXL, Docker e Docker Compose \cite{EstoqueFacilRepositorio}.
+Machine Learning compreende métodos capazes de aprender relações a partir de dados para realizar tarefas como classificação e regressão. Neste TCC, o problema será abordado prioritariamente como classificação supervisionada: cada amostra será associada a uma classe que representa a direção futura do WIN de acordo com um horizonte temporal e uma regra de rotulagem previamente definidos.
 
-\subsection{Python 3.13}
+A escolha por classificação, em vez de prever diretamente um preço exato, permite formular uma questão mais próxima do uso pretendido pelo sistema de apoio à decisão: identificar se o conjunto de informações disponível no instante analisado contém sinal suficiente para distinguir movimentos de alta e baixa. Essa abordagem também aparece em trabalhos relacionados à previsão de movimentos de índices e mercados financeiros \cite{Patel2015,Souza2026}.
 
-Python foi adotado como linguagem principal por possuir sintaxe legível, sistema de módulos, biblioteca padrão abrangente e amplo ecossistema de pacotes \cite{Python313Docs}. Essas características favorecem a produtividade e a manutenção de uma aplicação desenvolvida por uma equipe pequena. Sua integração direta com FastAPI, SQLAlchemy, OpenPyXL e bibliotecas de segurança reduz a necessidade de combinar diferentes linguagens no núcleo do sistema. Como contraponto, a linguagem não elimina a necessidade de organização arquitetural, testes e monitoramento de desempenho; a escolha é adequada ao escopo de um sistema interno de gestão, mas deve ser reavaliada caso medições futuras revelem gargalos.
+\subsection{Regressão Logística}
 
-\subsection{FastAPI e Uvicorn}
+A Regressão Logística será considerada como modelo de referência por oferecer uma linha de base simples e interpretável para classificação binária. Sua inclusão permite verificar se modelos mais complexos realmente acrescentam capacidade preditiva em relação a uma alternativa com menor complexidade.
 
-FastAPI é um framework web baseado em anotações de tipo do Python e nos padrões OpenAPI e JSON Schema. Ele oferece mecanismos para definição de rotas, validação, dependências, segurança, tratamento de erros, arquivos estáticos e templates \cite{FastAPIDocs}. No Estoque Fácil, esses recursos sustentam a separação das rotas por módulo, a autenticação, as permissões por perfil e a integração com os serviços de negócio. A escolha reduz código repetitivo e permite que futuras integrações utilizem os mesmos recursos HTTP da aplicação.
+\subsection{Random Forest}
 
-Uvicorn é utilizado como servidor ASGI para executar a aplicação FastAPI \cite{UvicornDocs}. Sua adoção é coerente com o framework e possibilita o tratamento das requisições HTTP no ambiente local e nos contêineres. Em produção, o servidor é colocado atrás do Traefik, evitando que fique diretamente responsável por certificados, domínios e roteamento externo.
+Random Forest é um método de aprendizado por conjunto que combina múltiplas árvores de decisão construídas com aleatoriedade na seleção de amostras e atributos \cite{Breiman2001}. A agregação de diversas árvores busca reduzir a variância e melhorar a capacidade de generalização. Em dados financeiros, o método é atraente por lidar com relações não lineares e interações entre atributos sem exigir uma forma funcional previamente especificada.
 
-\subsection{SQLAlchemy e PostgreSQL}
+Souza et al. \cite{Souza2026} utilizaram Random Forest em dados de contratos WIN e observaram que seleção de atributos e otimização de hiperparâmetros influenciaram o desempenho do classificador. Esse trabalho constitui uma referência especialmente importante por tratar diretamente do mesmo instrumento financeiro considerado neste TCC.
 
-SQLAlchemy realiza o mapeamento entre classes Python e estruturas relacionais, além de controlar sessões, consultas e transações \cite{SQLAlchemyDocs}. A camada de persistência utiliza PostgreSQL tanto no desenvolvimento quanto na produção. Essa uniformidade reduz diferenças de comportamento entre os ambientes, especialmente em tipos de dados, restrições, transações e consultas. O banco de cada ambiente, entretanto, permanece isolado em sua própria pilha Docker, com credenciais e volumes persistentes distintos. O uso de um ORM reduz a quantidade de SQL espalhado pelas rotas e favorece a centralização das regras de acesso aos dados, mas não dispensa conhecimento de SQL, índices, transações ou análise das consultas produzidas.
+\subsection{XGBoost}
 
-PostgreSQL foi escolhido como banco principal por oferecer transações, restrições de integridade, controle de concorrência e recursos adequados à centralização de dados relacionais \cite{PostgreSQLDocs}. Essas propriedades são importantes porque entradas, saídas, inventários, lotes e saldos precisam permanecer consistentes mesmo quando diferentes usuários operam o sistema. Sua utilização demanda administração, credenciais, backup e monitoramento, custos operacionais parcialmente organizados pelo Docker Compose e pelo serviço de backup da aplicação.
+XGBoost é uma implementação eficiente de gradient boosting baseada em árvores de decisão, com mecanismos de regularização e otimização voltados à construção incremental de modelos \cite{Chen2016}. O algoritmo é amplamente empregado em problemas tabulares e será considerado como candidato para comparação com modelos mais simples e com Random Forest.
 
-\subsection{Jinja2 e Bootstrap 5}
+\subsection{Redes neurais}
 
-Jinja2 é o mecanismo de templates responsável por combinar dados do servidor com documentos HTML \cite{JinjaDocs}. A renderização no servidor foi considerada adequada para um sistema interno centrado em formulários, consultas e relatórios, pois mantém a maior parte das regras e da navegação em uma única aplicação. Em comparação com uma aplicação de página única, essa abordagem reduz a complexidade inicial do frontend e do processo de implantação. Como limitação, interações muito dinâmicas poderão exigir JavaScript adicional ou uma evolução futura da camada de interface.
+Redes neurais artificiais modelam relações não lineares por meio de camadas de unidades conectadas e parâmetros ajustados durante o treinamento. Uma Multilayer Perceptron (MLP) pode ser aplicada a atributos tabulares construídos a partir de dados históricos e indicadores técnicos. No estudo de Souza et al. \cite{Souza2026}, uma MLP foi utilizada na classificação intraday do Mini Índice e apresentou desempenho competitivo no protocolo adotado pelos autores.
 
-Bootstrap 5 fornece componentes visuais, sistema de grade e utilitários responsivos \cite{BootstrapDocs}. No Estoque Fácil, sua utilização acelera a construção de formulários, tabelas, alertas e menus consistentes em diferentes tamanhos de tela. A adoção de um framework visual pode produzir interfaces genéricas ou estilos não utilizados; por isso, o projeto mantém arquivos CSS próprios para identidade visual e ajustes de usabilidade.
+Arquiteturas recorrentes como Long Short-Term Memory (LSTM) foram propostas para lidar com dependências temporais de longo prazo \cite{Hochreiter1997} e também são utilizadas em pesquisas sobre previsão financeira \cite{Fischer2018}. Entretanto, neste projeto a adoção de LSTM será tratada como possibilidade de extensão, e não como requisito obrigatório. A prioridade será estabelecer primeiro um protocolo de dados e avaliação confiável com modelos de menor complexidade.
 
-\subsection{OpenPyXL}
+\section{Indicadores técnicos e construção de atributos}
 
-OpenPyXL permite ler e produzir arquivos de planilha no formato XLSX \cite{OpenPyXLDocs}. A biblioteca atende ao requisito de exportar o estoque atual e as movimentações para uma ferramenta já conhecida por muitas empresas. A planilha exportada funciona como relatório e meio de análise complementar, sem substituir o banco de dados como fonte oficial das informações.
+Indicadores técnicos transformam séries de preço e volume em variáveis derivadas destinadas a representar tendência, momentum, volatilidade ou condições relativas do mercado. Revisões de literatura apontam ampla utilização de indicadores técnicos em modelos de Machine Learning aplicados a mercados financeiros \cite{Kumbure2022}.
 
-\subsection{Docker, integração e implantação}
+Entre os indicadores candidatos para este trabalho estão médias móveis, retorno percentual, volatilidade móvel, Relative Strength Index (RSI), Moving Average Convergence Divergence (MACD) e medidas relacionadas ao volume. A seleção final dependerá da disponibilidade dos dados e de testes realizados sem utilizar informações futuras.
 
-Docker empacota a aplicação e suas dependências em uma imagem, enquanto Docker Compose descreve os serviços web e PostgreSQL, redes, volumes persistentes, variáveis e dependências de inicialização \cite{DockerComposeDocs}. O arquivo \path{docker-compose.yml} permite construir e executar localmente a aplicação e o PostgreSQL. O arquivo \path{docker-compose.prod.yml}, parametrizado por variáveis de ambiente e pela imagem publicada, serve de base para as pilhas remotas de desenvolvimento/homologação e produção. Cada pilha possui projeto Compose, banco e volumes próprios. Essa configuração reduz diferenças entre ambientes e facilita a reconstrução da aplicação. Em contrapartida, contêineres acrescentam uma camada operacional e não substituem rotinas de atualização, backup, observabilidade e proteção dos segredos.
+A inclusão de grande quantidade de atributos não implica necessariamente melhor desempenho. Variáveis redundantes ou altamente correlacionadas podem aumentar a complexidade e favorecer overfitting. O trabalho de Souza et al. \cite{Souza2026} mostra, no contexto do WIN, que métodos de seleção e transformação de atributos podem alterar o desempenho de Random Forest e MLP. Por isso, este TCC deverá registrar quais atributos foram utilizados e, se houver seleção, aplicar o processo apenas com dados pertencentes ao conjunto de treinamento.
 
-O fluxo de desenvolvimento definido para o projeto começa com a abertura de uma \textit{issue}. A partir dela, o desenvolvedor cria uma branch de funcionalidade ou correção e abre um \textit{pull request} para a branch \texttt{developer}, utilizada como integração e ambiente de desenvolvimento/homologação. O código passa por revisão e, após o aceite do \textit{merge}, por análises e testes. Somente uma versão validada deve ser promovida para a branch \texttt{main}, que representa a produção. Esse fluxo procura impedir que alterações ainda não verificadas sejam implantadas diretamente no ambiente produtivo.
+\section{Validação temporal e vazamento de informação}
 
-O repositório utiliza GitHub Actions para automatizar a construção e a publicação das imagens no GitHub Container Registry \cite{GitHubActionsDocs,GitHubContainerRegistry}. A imagem recebe uma etiqueta associada ao \textit{commit} e outra correspondente à branch. Em seguida, o workflow seleciona as variáveis e os segredos do ambiente, transfere o arquivo Compose para a instância remota e executa a atualização dos contêineres. Dessa maneira, os ambientes integrados utilizam imagens produzidas pelo mesmo processo automatizado, mas mantêm domínios, credenciais, bancos e volumes separados.
+Em problemas de séries temporais, amostras futuras não devem influenciar a construção do modelo utilizado para prever períodos anteriores. Operações aparentemente simples, como normalização, seleção de atributos ou cálculo de limiares utilizando todo o conjunto de dados, podem transferir informação do conjunto de teste para o treinamento.
 
-Na versão do workflow consultada durante a elaboração deste projeto, o gatilho automático ainda referencia \texttt{develop}, embora a configuração interna também reconheça \texttt{developer}. Além disso, não foram identificadas etapas dedicadas de análise estática e testes antes do trabalho de construção e implantação. Portanto, a adequação do gatilho para \texttt{developer} e a inclusão dessas verificações como condição para a promoção à \texttt{main} integram a metodologia proposta para o TCC I. Essa distinção evita apresentar como concluída uma automação que ainda deverá ser implementada e validada.
+Por esse motivo, este trabalho adotará separação cronológica entre treinamento, validação e teste. Quando houver ajuste de hiperparâmetros, ele deverá ser realizado sem acesso ao período reservado para o teste final. Essa decisão busca aproximar o experimento de uma situação real, na qual o modelo dispõe apenas das informações existentes até o instante de previsão.
 
-Na infraestrutura prevista, uma instância Amazon EC2 executa os contêineres, oferecendo capacidade computacional configurável na nuvem \cite{AWSEC2Docs}. O Traefik atua como proxy reverso, encaminhando requisições ao contêiner, separando domínios e habilitando HTTPS \cite{TraefikDocs}. Essas escolhas são justificadas pela infraestrutura já utilizada pelo projeto, e não pela afirmação de que sejam as únicas alternativas possíveis. Serviços gerenciados, outras nuvens ou hospedagem local deverão ser comparados quanto a custo, disponibilidade, conhecimento da equipe e esforço de manutenção.
+\section{Métricas de avaliação}
 
-As decisões serão avaliadas pela relação entre problema, requisito, alternativas, justificativa, implementação, benefício esperado e limitação observada. Dessa forma, a tecnologia não é tratada como finalidade do trabalho, mas como meio para atender requisitos de funcionalidade, segurança, manutenção, portabilidade e implantação.
+A avaliação de classificadores não será baseada exclusivamente em acurácia. Serão consideradas, conforme aplicabilidade, as métricas Accuracy, Precision, Recall, F1-score, Balanced Accuracy, ROC-AUC e matriz de confusão. Essa combinação permite observar o comportamento do modelo mesmo quando as classes apresentarem distribuição desigual.
 
-\section{Qualidade de software}
+Caso sinais do classificador sejam convertidos em uma simulação de estratégia, o backtest será tratado como análise complementar. Nesse caso, deverão ser explicitados pressupostos como custos, regras de entrada e saída, tamanho da posição e período avaliado. Um bom resultado estatístico de classificação não será interpretado automaticamente como evidência de rentabilidade.
 
-A qualidade de software deve ser analisada em relação a características e critérios observáveis, conforme modelos de qualidade como a ISO/IEC 25010 \cite{ISO25010}. Para este estudo, poderão ser considerados adequação funcional, eficiência de desempenho, compatibilidade, usabilidade, confiabilidade, segurança e manutenibilidade. Os critérios e instrumentos serão definidos antes da avaliação, de acordo com a disponibilidade do sistema e com a orientação acadêmica.
+\section{Sistemas de apoio à decisão}
 
-\section{Trabalhos e soluções existentes}
+Um sistema de apoio à decisão organiza dados, modelos e informações para auxiliar o usuário em uma decisão, sem necessariamente substituí-lo. No contexto deste trabalho, o protótipo deverá apresentar ao trader os resultados dos modelos de forma clara, incluindo classe prevista, probabilidade ou escore quando disponível, indicadores utilizados e informações sobre o modelo.
 
-O levantamento de mercado deverá identificar soluções de gestão de estoque e registrar critérios como funcionalidades, público-alvo, facilidade de uso, relatórios, integrações, disponibilidade web, modelo de comercialização e características técnicas publicamente disponíveis. A comparação terá finalidade analítica e não deverá atribuir características que não possam ser verificadas nas fontes consultadas.
+A ferramenta será concebida como apoio informacional. Ela não executará ordens automaticamente e não apresentará o resultado do modelo como garantia de comportamento futuro do mercado.
+
+\section{Trabalhos relacionados}
+
+Patel et al. \cite{Patel2015} investigaram técnicas de Machine Learning para previsão de movimentos de ações e índices utilizando preparação de dados e indicadores técnicos. Fischer e Krauss \cite{Fischer2018} aplicaram redes LSTM a dados do mercado acionário, demonstrando a presença de arquiteturas recorrentes na literatura de previsão financeira. Revisões posteriores sintetizaram grande variedade de modelos, atributos e mercados analisados, destacando a recorrência de redes neurais, SVM e indicadores técnicos \cite{Kumbure2022,Arun2023}.
+
+Mais diretamente relacionado a este TCC, Souza et al. \cite{Souza2026} avaliaram dados intraday de contratos de Mini Índice (WIN) da base BovDBv2, comparando Random Forest e MLP em conjunto com métodos de seleção de atributos e otimização de hiperparâmetros. Os autores relataram acurácias de teste próximas a 0,66 nas melhores configurações e destacaram que os ganhos foram modestos diante do caráter ruidoso e não estacionário do problema. A proximidade temática faz desse estudo uma referência central para a definição e discussão do experimento proposto aqui.
+
+A contribuição pretendida deste trabalho não é afirmar superioridade universal de um algoritmo, mas construir um processo reprodutível para o WIN, comparar modelos sob um protocolo temporal consistente e integrar as saídas a um protótipo de apoio à decisão.
