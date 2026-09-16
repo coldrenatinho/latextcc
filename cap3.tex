@@ -1,44 +1,251 @@
 \chapter{Metodologia}
+\label{cap:metodologia}
 
-\section{Tipo de pesquisa}
+Neste capítulo, defino os procedimentos que pretendo utilizar para evoluir, documentar e avaliar o protótipo Estoque Fácil em correspondência com o problema apresentado na introdução. Como este documento corresponde ao TCC I, apresento a implementação complementar, os testes e a análise como planejamento para o TCC II. Distingo a consulta documental que realizo nesta etapa da avaliação futura de uma versão identificada do sistema.
 
-Trata-se de uma pesquisa aplicada, de abordagem qualitativa e quantitativa conforme os instrumentos de avaliação utilizados. Quanto aos objetivos, é exploratória e descritiva. Quanto aos procedimentos, combina pesquisa bibliográfica, pesquisa documental, estudo de caso, levantamento de mercado e desenvolvimento de software.
+\section{Caracterização da pesquisa}
 
-\section{Objeto de estudo}
+Caracterizo minha pesquisa como aplicada porque direciono a produção de conhecimento a um problema de controle de estoques e ao desenvolvimento de uma solução de software. Quanto aos objetivos, adoto caráter exploratório para identificar necessidades e alternativas e caráter descritivo para documentar requisitos, arquitetura e comportamento observado. No TCC II, combinarei a análise qualitativa de documentos e decisões com medidas quantitativas descritivas dos testes.
 
-O objeto de estudo é o Estoque Fácil, sistema web disponibilizado no repositório \url{https://github.com/coldrenatinho/Estoque_Facil}. O repositório será analisado como fonte de evidências sobre funcionalidades, tecnologias, organização do código, arquitetura, histórico de decisões e estado de implementação, respeitando a versão utilizada no período da pesquisa.
+Adotarei como procedimento central um estudo de caso único, delimitado ao Estoque Fácil. Organizo o protocolo segundo as etapas de planejamento, preparação da coleta, obtenção de evidências, análise e relato discutidas por \citeonline{RunesonHost2009}. Utilizo pesquisa bibliográfica e documental para fundamentar e analisar o caso e pretendo empregar desenvolvimento incremental nas alterações definidas para o TCC II. Não pretendo realizar um levantamento estatisticamente representativo do mercado regional.
 
-\section{Procedimentos metodológicos}
+\section{Objeto, unidade de análise e delimitação}
 
+Adoto como objeto o protótipo web Estoque Fácil, identificado pelo repositório de software de \citeonline{EstoqueFacilRepositorio}. Defino como unidade de análise a relação entre requisitos selecionados, decisões de implementação e evidências de verificação. No TCC I, examino código-fonte, documentação, modelo de dados e configurações; no TCC II, acrescentarei registros de mudanças e resultados dos testes.
+
+Delimito o núcleo funcional a usuários e permissões, produtos, categorias, fornecedores, entradas, saídas, consulta de saldo, histórico e relatórios. Incluirei nos cenários de avaliação o vínculo da saída a setor e funcionário e a visualização por setor. Testarei lotes, inventários e recursos multiempresa quando integrarem os fluxos da versão selecionada. Não incluirei vendas, emissão de documentos fiscais, contabilidade ou otimização de compras como exigências deste estudo.
+
+Na inspeção funcional deste capítulo, utilizo uma cópia local do repositório do Estoque Fácil, consultada em 16 de setembro de 2026 \cite{EstoqueFacilRepositorio}. Como o protótipo permanece em desenvolvimento, essa inspeção representa um recorte do código, e não uma versão final do sistema. Antes da avaliação do TCC II, produzirei uma versão identificável que reúna código, documentação e configuração e registrarei eventuais diferenças locais. Vincularei a avaliação a essa versão, e não ao estado mutável da branch principal.
+
+\subsection{Estado inicial e contribuição prevista}
+\label{sec:estado-contribuicao}
+
+Na Tabela~\ref{tab:estado-contribuicao}, delimito a contribuição acadêmica em relação ao protótipo que desenvolvi antes e durante o TCC I. ``Presente no protótipo'' indica código ou configuração que identifiquei por inspeção, sem representar aprovação em testes. ``A corrigir no TCC II'' identifica uma divergência já observada; ``a desenvolver no TCC II'' reúne artefatos e complementações previstos; e ``a avaliar no TCC II'' designa comportamentos cujo atendimento ainda precisarei demonstrar. Um mesmo módulo poderá estar presente no protótipo e ainda depender de avaliação.
+
+\begin{table}[htb]
+\centering
+\caption{Estado inicial do protótipo e contribuição prevista no TCC}
+\label{tab:estado-contribuicao}
+\small
+\begin{tabular}{p{0.17\textwidth}p{0.36\textwidth}p{0.36\textwidth}}
+\hline
+\textbf{Estado} & \textbf{Objeto e evidência inicial} & \textbf{Entrega ou condição de conclusão} \\ \hline
+Presente no protótipo & Rotas e serviços de cadastros, entradas, saídas, relatórios e painel por setor. & Inventariar os recursos e vinculá-los aos requisitos, sem apresentá-los como implementação nova do TCC. \\ \hline
+Presente no protótipo & Modelos SQLAlchemy, arquivos Compose e serviços de inventário, lotes, reposição e backup. & Registrar a versão e documentar as responsabilidades e limitações encontradas. \\ \hline
+A corrigir no TCC II & Gatilho do workflow referencia \texttt{develop}, enquanto o fluxo proposto utiliza \texttt{developer}. & Alinhar a configuração e registrar uma execução do fluxo na branch definida. \\ \hline
+A desenvolver no TCC II & Etapas explícitas de testes no pipeline e organização da base experimental com PostgreSQL. & Entregar configuração versionada, dados sintéticos e evidência de execução automatizada. \\ \hline
+A desenvolver no TCC II & Matriz de rastreabilidade, casos de teste e registros de decisões; complementações decorrentes de falhas verificadas. & Relacionar requisito, alteração, teste e resultado; justificar mudanças de escopo. \\ \hline
+A avaliar no TCC II & Saldo, concorrência, permissões, vínculos de retirada, filtros por setor, desempenho e recuperação de backup. & Produzir relatório com resultados positivos, falhas, casos bloqueados e limitações. \\ \hline
+\end{tabular}
+\par\smallskip
+{\footnotesize Fonte: elaboração própria a partir da inspeção de \cite{EstoqueFacilRepositorio} em 16 set. 2026.}
+\end{table}
+
+Apresento os diagramas e o levantamento documental a seguir como artefatos iniciais do TCC I. Antes das alterações planejadas para o TCC II, preservarei a base de comparação por meio do commit e das diferenças locais pertinentes. No relatório final, descreverei apenas as mudanças realizadas após essa base e as associarei aos registros de desenvolvimento. Falhas ainda não demonstradas, como uma possível inconsistência sob concorrência, permanecerão classificadas como itens a avaliar; sua correção somente será contabilizada se houver evidência do problema e da mudança correspondente.
+
+\subsection{Visão da arquitetura existente}
+
+Na Figura~\ref{fig:arquitetura-estoque}, sintetizo o fluxo que identifiquei em \path{app/main.py}, nas rotas, nos serviços e em \path{app/database.py}. A aplicação gera HTML no servidor, utiliza serviços de negócio e também contém consultas realizadas diretamente pelas rotas. Portanto, o diagrama não pressupõe separação estrita entre todas as camadas. Sessão e permissões são tratadas na aplicação; o desenho representa responsabilidades lógicas e não serviços independentes.
+
+\begin{figure}[htb]
+\centering
+\input{figs/arquitetura-estoque}
+\caption{Visão lógica da aplicação e configuração de banco prevista para a avaliação}
+\label{fig:arquitetura-estoque}
+\par\smallskip
+{\footnotesize Fonte: elaboração própria a partir de \cite{EstoqueFacilRepositorio}.}
+\end{figure}
+
+PostgreSQL é o banco escolhido para o ambiente experimental. A possibilidade de SQLite na configuração local preexistente permanece explicitada na análise tecnológica. Proxy reverso, publicação de imagens e servidor de hospedagem pertencem à visão de implantação discutida no Capítulo~\ref{cap:referencial} e não estão representados nesta figura.
+
+\subsection{Recorte do modelo de dados}
+
+Na Figura~\ref{fig:dados-estoque}, apresento um recorte do modelo relacional que construí a partir das classes SQLAlchemy de produto, categoria, movimentação, usuário, setor, fornecedor e funcionário. PK identifica chave primária e FK, chave estrangeira. As multiplicidades próximas a cada entidade indicam quantas instâncias dela podem estar associadas a uma instância da entidade oposta.
+
+\begin{figure}[htb]
+\centering
+\input{figs/dados-estoque}
+\caption{Recorte do modelo de dados das movimentações de estoque}
+\label{fig:dados-estoque}
+\par\smallskip
+{\footnotesize Fonte: elaboração própria a partir dos modelos em \cite{EstoqueFacilRepositorio}.}
+\end{figure}
+
+Cada movimentação referencia obrigatoriamente um produto; um produto pode possuir nenhuma ou várias movimentações. Na estrutura consultada, categoria no produto e usuário, setor, fornecedor e funcionário na movimentação são vínculos opcionais. Sua existência não comprova que toda retirada identifique o destinatário ou o usuário autenticado: o preenchimento e as regras de obrigatoriedade precisarão ser conferidos nos cenários de avaliação.
+
+O desenho omite entidades de inventário, pedidos de reposição, lotes e empresa, além de atributos e relacionamentos secundários, para destacar o núcleo operacional. No modelo completo existem vínculos adicionais, inclusive \texttt{empresa\_id} e \texttt{lote\_id}. Não há, neste recorte, relação direta entre produto e fornecedor: a associação ilustrada ocorre por movimentação. No TCC II, atualizarei a documentação completa junto à versão final e tratarei a validação entre empresas separadamente dos vínculos de consumo por setor.
+
+\subsection{Funções e atores em diagramas UML}
+\label{sec:uml-funcoes}
+
+Nas Figuras~\ref{fig:uml-operacao} e~\ref{fig:uml-administracao}, apresento casos de uso UML que extraí das rotas e das dependências de autorização da cópia local examinada. O limite retangular representa o sistema; os atores representam perfis, e cada elipse expressa um objetivo do usuário, não uma tela isolada. Na primeira figura, os atores são repetidos à direita para evitar cruzamentos de associações; cada par representa o mesmo perfil. As associações agrupam as capacidades principais para preservar a leitura. Por exemplo, ``gerir pedidos de reposição'' compreende gerar, ajustar quantidades, marcar como enviado, concluir e cancelar; a conclusão não registra automaticamente a entrada dos itens recebidos. O administrador também tem acesso às operações do operador e às consultas do visualizador, conforme as permissões das rotas. A variante ``administrador geral'' corresponde a um administrador sem empresa vinculada e concentra as ações globais de empresas, backup e aparência.
+
+\begin{figure}[htb]
+\centering
+\resizebox{\textwidth}{!}{\input{figs/uml-casos-operacao}}
+\caption{Casos de uso UML de consulta e operação do Estoque Fácil}
+\label{fig:uml-operacao}
+\par\smallskip
+{\footnotesize Fonte: elaboração própria a partir das rotas do protótipo disponíveis em \cite{EstoqueFacilRepositorio}.}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\resizebox{\textwidth}{!}{\input{figs/uml-casos-administracao}}
+\caption{Casos de uso UML de administração do Estoque Fácil}
+\label{fig:uml-administracao}
+\par\smallskip
+{\footnotesize Fonte: elaboração própria a partir das rotas do protótipo disponíveis em \cite{EstoqueFacilRepositorio}.}
+\end{figure}
+
+Na referência examinada, o visualizador consulta produtos, saldos, movimentações, lotes, inventários, pedidos e relatórios, mas não recebe permissão para registrar alterações nesses fluxos. O operador pode cadastrar e importar produtos, efetuar entradas e saídas, confirmar importação de NF-e em XML, conduzir inventários e alterar pedidos. O administrador mantém, além disso, categorias, fornecedores, setores, funcionários e usuários, e consulta auditoria e logs. A API de leitura com token é uma interface de integração separada dos perfis de sessão e não foi representada como ator humano. O termo ``importar NF-e'' significa ler XML e registrar entradas; o sistema não emite nota fiscal.
+
+O caso de uso ``registrar saída'' é detalhado na Figura~\ref{fig:uml-saida}. A rota exige produto, setor e funcionário ativos do mesmo contexto de empresa, valida a quantidade informada e aciona o serviço. Este bloqueia o produto, apura o saldo, recusa uma quantidade superior ao disponível e, se válida, grava a movimentação e confirma a transação. O diagrama resume o percurso principal e a alternativa de saldo insuficiente; não substitui a avaliação de concorrência prevista no protocolo. Embora as chaves \texttt{setor\_id} e \texttt{funcionario\_id} sejam anuláveis no modelo relacional, a tela de saída examinada exige ambas. No TCC II, testarei essa diferença entre regra da interface e restrição do banco por meio das rotas e dos serviços.
+
+\begin{figure}[htb]
+\centering
+\resizebox{\textwidth}{!}{\input{figs/uml-sequencia-saida}}
+\caption{Diagrama de sequência UML para registrar uma saída de estoque}
+\label{fig:uml-saida}
+\par\smallskip
+{\footnotesize Fonte: elaboração própria a partir de \path{app/routes/estoque_routes.py} e \path{app/services/estoque_service.py} disponíveis em \cite{EstoqueFacilRepositorio}.}
+\end{figure}
+
+Esses casos de uso descrevem funcionalidades presentes no código, ainda sem comprovação de atendimento em testes. Curva ABC, apuração contábil do estoque e cálculo do tempo de armazenamento não foram identificados como funções implementadas nas rotas examinadas; permanecem candidatos a requisitos futuros, dependentes de regras de classificação, custo e data de entrada. Assim, não aparecem nas figuras como capacidades entregues.
+
+\section{Origem exploratória da demanda}
+
+Minha experiência no suporte a um ERP em Sinop constitui a origem empírica inicial da questão de pesquisa. Nesse contexto profissional, percebi situações de contagens frequentes para esclarecer saldos e dificuldades de consulta a quantidades, tempo de armazenamento, valores contábeis e classificação por curva ABC. Registro essa percepção retrospectivamente, sem levantamento sistemático de organizações, frequência, período de observação ou instrumentos de coleta. Por isso, utilizo-a para motivar e formular hipóteses de necessidade, e não como resultado de entrevista, levantamento de campo ou estimativa de prevalência entre pequenas e médias empresas.
+
+Na análise documental e bibliográfica, confrontarei essas percepções com práticas de controle descritas em fontes identificáveis. Na matriz de requisitos, cada demanda receberá origem explícita: minha observação exploratória, fonte bibliográfica, documentação de produto, regra operacional ou decisão de projeto. No TCC II, avaliarei o vínculo de retirada a setor e funcionário no escopo definido. Tempo de armazenamento, contabilidade de estoque e curva ABC permanecerão candidatos a investigação complementar, pois dependem de definições de dados, período, custo e finalidade de uso ainda não estabelecidas para a versão avaliada.
+
+Não identificarei nem descreverei como participante da pesquisa nenhuma empresa que atendi durante minha atividade profissional. Eventual validação das necessidades com organizações exigirá procedimento de coleta próprio, nos termos da seção de aspectos éticos. Essa separação permite aproveitar a experiência que motivou o trabalho sem atribuir ao relato a força de evidência obtida por pesquisa de campo.
+
+\section{Questões operacionais e evidências}
+
+Desdobro a questão geral em três questões operacionais:
 \begin{enumerate}
-    \item \textbf{Fundamentação}: realizar revisão bibliográfica sobre gestão de estoques, sistemas de informação, requisitos, arquitetura web e qualidade de software;
-    \item \textbf{Levantamento de mercado}: selecionar soluções existentes e compará-las com critérios explícitos e fontes verificáveis;
-    \item \textbf{Requisitos}: consolidar necessidades do domínio e documentar requisitos funcionais e não funcionais;
-    \item \textbf{Análise do sistema}: examinar o repositório, a arquitetura, o modelo de dados, os módulos e as tecnologias empregadas;
-    \item \textbf{Desenvolvimento}: implementar ou consolidar funcionalidades priorizadas, registrando decisões e mudanças relevantes;
-    \item \textbf{Integração e entrega}: organizar o trabalho por \textit{issues}, branches e \textit{pull requests}, automatizando análises, testes, construção da imagem e implantação dos ambientes;
-    \item \textbf{Avaliação}: aplicar testes e critérios de qualidade definidos previamente, apresentando evidências e limitações;
-    \item \textbf{Síntese}: discutir os resultados, comparar características selecionadas e indicar possibilidades de evolução.
+    \item quais necessidades percebi e quais regras documentadas justificam os requisitos selecionados para o sistema?
+    \item como as decisões arquiteturais e tecnológicas atendem a esses requisitos, e quais limitações introduzem?
+    \item em que medida a versão avaliada atende aos critérios funcionais e de qualidade estabelecidos no protocolo?
 \end{enumerate}
 
-\section{Requisitos e funcionalidades previstas}
+Responderei à primeira questão por meio de fichas de fontes e da matriz de requisitos; à segunda, pela descrição da arquitetura e pelos registros de decisão; e à terceira, pelos casos de teste, medições e registros de falhas. Com essa organização, poderei identificar a evidência que sustenta cada conclusão, inclusive quando um requisito não puder ser verificado.
 
-Entre os módulos previstos estão autenticação e usuários, produtos, categorias, fornecedores, movimentações de entrada e saída, histórico, relatórios e painel de acompanhamento. A lista final dependerá do estado do sistema e da priorização estabelecida durante o desenvolvimento. Cada requisito deverá possuir identificação, descrição, prioridade e critério de aceitação quando aplicável.
+\section{Levantamento bibliográfico e documental}
 
-\section{Avaliação}
+Realizarei uma revisão bibliográfica narrativa orientada pelos temas gestão de estoques, sistemas de informação, engenharia de requisitos, arquitetura web, qualidade de produto e avaliação de software. Consultarei Google Acadêmico, SciELO e repositórios institucionais para localização de trabalhos, além de publicações de organismos de normalização e documentação oficial das tecnologias. O procedimento não será apresentado como revisão sistemática ou exaustiva.
 
-A avaliação poderá incluir testes funcionais baseados em casos de uso, inspeção de requisitos, análise de características de qualidade, verificação de responsividade e medição de tempos de resposta em cenários controlados. Caso sejam aplicados questionários ou entrevistas, o instrumento, a amostra, o procedimento e as limitações serão descritos antes da apresentação dos resultados. Este projeto não antecipa métricas ainda não coletadas.
+Nas buscas, combinarei expressões em português e inglês, como ``gestão de estoques'' e ``sistema web'', ``inventory management'' e ``information system'', e ``software quality'' e ``case study''. Para cada busca, registrarei a base, a data, a expressão utilizada e os documentos selecionados. Obras conceituais serão admitidas independentemente do ano; para tecnologias e normas, a edição deverá ser identificada e compatível com a discussão.
 
-\section{Fluxo de desenvolvimento e implantação}
+Incluirei fontes com autoria ou responsabilidade institucional identificável, conteúdo acessível e relação direta com o problema. Excluirei documentos duplicados, materiais sem procedência verificável e textos cujo conteúdo disponível não permita sustentar a afirmação pretendida. Em uma ficha de leitura, reunirei referência, objetivo, conceito aproveitado, limitação e seção do TCC em que a fonte será utilizada. Na redação, privilegiarei sínteses próprias e citações associadas às afirmações que as fontes efetivamente sustentam.
 
-Cada demanda deverá ser registrada em uma \textit{issue} do repositório. O desenvolvimento ocorrerá em uma branch específica, vinculada à demanda, e a integração será solicitada por \textit{pull request} para \texttt{developer}. O aceite dependerá de revisão e dos critérios definidos para a alteração. Após a integração, o sistema será submetido à análise e aos testes no ambiente de desenvolvimento/homologação. A promoção para \texttt{main} ocorrerá somente quando a versão candidata estiver validada, pois essa branch representa o ambiente de produção.
+\section{Levantamento de soluções e identificação de demandas}
 
-O GitHub Actions será utilizado como mecanismo de integração e entrega contínuas. O pipeline deverá executar as verificações definidas, construir a imagem Docker, publicá-la no GitHub Container Registry e implantar a imagem correspondente ao ambiente. O PostgreSQL será utilizado nos dois ambientes, sem adoção de um banco alternativo no desenvolvimento local. A separação ocorrerá por configurações, segredos, projetos Compose e volumes independentes.
+No levantamento documental inicial, contemplo Bling, Conta Azul Pro, Omie, Odoo Inventory e ERPNext, com fontes oficiais consultadas em 16 de setembro de 2026 e síntese apresentada na Seção~\ref{sec:mercado}. Atualizarei a análise antes da avaliação final, preservando a data e as condições de cada consulta. Outras soluções poderão ser incorporadas se possuírem controle de entradas e saídas, interface web e documentação pública suficiente para aplicar os mesmos critérios. A seleção será intencional e não probabilística; a disponibilidade de documentação será reconhecida como fator que limita a composição da amostra.
 
-\section{Reprodutibilidade}
+Examinarei cada solução quanto a cadastros, movimentações, histórico, conferência de estoque, relatórios, permissões, integrações e condições de implantação documentadas. Registrarei versão ou edição, endereço consultado, data de acesso e eventuais dependências de módulos ou planos. Preços somente serão utilizados se necessários à análise e associados à data e às condições anunciadas.
 
-Serão registrados o commit ou a versão do sistema, a \textit{issue} relacionada, a imagem Docker produzida, as configurações relevantes, o ambiente utilizado, os casos de teste e os critérios de avaliação. As decisões arquiteturais serão documentadas em estrutura semelhante a: problema, requisito, alternativas, decisão, justificativa, implementação e consequência.
+Classificarei cada característica como: documentada como disponível, documentada com restrição, explicitamente não oferecida na edição consultada ou não verificada. Ausência de menção não será interpretada como ausência do recurso. Facilidade de uso e desempenho não serão inferidos de páginas comerciais ou de documentação. Quando uma informação depender de acesso não disponível, a limitação será registrada.
 
-\section{Aspectos éticos}
+Examinarei os diferenciais propostos na Seção~\ref{sec:diferenciais} por cenários de consumo interno, execução do fluxo sem venda associada, reconstrução do ambiente e alteração rastreável de uma regra. A comparação documental não será utilizada para alegar exclusividade de um recurso não verificado nos concorrentes.
 
-A pesquisa inicialmente se concentra em software, documentação e soluções públicas, sem necessidade de dados pessoais. Caso envolva usuários, entrevistas ou questionários, serão observados consentimento, privacidade, confidencialidade e as exigências institucionais aplicáveis antes da coleta. Nenhum resultado com participantes será afirmado sem a realização do procedimento correspondente.
+Tratarei as funções recorrentes como candidatas a requisitos. Sua adoção dependerá da pertinência ao problema, das regras do domínio e da viabilidade no período do TCC. Necessidades atribuídas especificamente a empresas do norte de Mato Grosso somente poderão ser afirmadas a partir de evidências dessas organizações; a comparação de produtos, isoladamente, não fornecerá essa validação regional.
+
+\section{Especificação e priorização dos requisitos}
+
+No processo de especificação, adotarei identificação, critérios de aceitação e rastreabilidade, em consonância com as práticas de requisitos apresentadas no SWEBOK \cite{SWEBOK2026}. Em cada item, registrarei origem, descrição, regra associada, prioridade, dependências, estado de implementação e testes relacionados. Os estados serão: proposto, implementado sem verificação, aprovado em teste, reprovado e não avaliado.
+
+A prioridade será essencial quando o requisito for necessário ao fluxo de cadastro, movimentação e consulta segura; importante quando ampliar a conferência e o acompanhamento; e desejável quando puder ser adiado sem inviabilizar o núcleo. Na Tabela~\ref{tab:requisitos}, defino o conjunto inicial para orientar a execução. Seus critérios representam compromissos de verificação, não resultados já obtidos.
+
+\begin{table}[htb]
+\centering
+\caption{Requisitos funcionais iniciais e critérios de aceitação}
+\label{tab:requisitos}
+\small
+\begin{tabular}{p{0.09\textwidth}p{0.24\textwidth}p{0.56\textwidth}}
+\hline
+\textbf{ID} & \textbf{Requisito} & \textbf{Critério de aceitação} \\ \hline
+RF01 & Autenticar e autorizar & Recusar acesso não autenticado e operações incompatíveis com o perfil. \\ \hline
+RF02 & Manter cadastros & Validar campos obrigatórios, identificar produtos e preservar vínculos de registros inativados. \\ \hline
+RF03 & Registrar entrada & Acrescentar a quantidade ao saldo e registrar produto, data e responsável. \\ \hline
+RF04 & Registrar saída & Aceitar quantidade positiva até o saldo e recusar excesso sem alterar os registros. \\ \hline
+RF05 & Consultar saldo e histórico & Apresentar valores compatíveis com as movimentações e os filtros aplicados. \\ \hline
+RF06 & Gerar relatórios & Produzir relatório e exportação com os mesmos dados e filtros da consulta correspondente. \\ \hline
+\end{tabular}
+\par\smallskip
+{\footnotesize Fonte: elaboração própria para o protocolo de avaliação.}
+\end{table}
+
+Classifico RF01 a RF05 como essenciais e RF06 como importante. Especificarei os requisitos não funcionais por cenários, como preservação da consistência sob duas saídas simultâneas, rejeição de operação sem permissão e reconstrução do ambiente com a versão documentada. Limites de desempenho dependerão do ambiente de referência e serão registrados antes das medições; sem limite previamente definido, a análise será descritiva, sem classificação arbitrária de aprovação.
+
+\section{Projeto, desenvolvimento e implantação}
+
+Na análise arquitetural, mapearei rotas, serviços, modelos e templates, verificando como uma operação percorre essas partes. O modelo de dados deverá explicitar entidades, chaves, relacionamentos e regras de integridade. Para cada decisão relevante, registrarei contexto, alternativas, justificativa, consequências e requisito atendido. Na documentação, distinguirei organização prevista e estrutura observada no código.
+
+No TCC II, desenvolverei incrementos relacionados aos requisitos priorizados. Registrarei cada demanda em uma \textit{issue}, farei a implementação em branch específica e a submeterei por \textit{pull request} à branch \texttt{developer}. A revisão e as verificações automatizadas deverão preceder a promoção para \texttt{main}. Como acumularei os papéis de desenvolvedor e pesquisador, declararei quando eu mesmo realizar a implementação e a revisão, sem caracterizar essa revisão como independente.
+
+Empregarei o GitHub Actions para organizar verificações, construção e publicação de imagens, conforme os recursos descritos em sua documentação \cite{GitHubActionsDocs,GitHubContainerRegistry}. A configuração consultada ainda referencia \texttt{develop} no gatilho, e não demonstra uma etapa dedicada de testes. A adequação à branch \texttt{developer} e a inclusão das verificações serão tarefas do desenvolvimento, com evidência de execução antes de serem consideradas concluídas.
+
+Utilizarei Docker Compose para organizar o ambiente experimental \cite{DockerComposeDocs}. Configurarei PostgreSQL tanto no desenvolvimento usado para os testes quanto na homologação, com bancos e volumes separados. Como a aplicação admite SQLite por padrão em execução local, verificarei e registrarei a configuração efetiva antes de cada coleta. Os ensaios utilizarão dados sintéticos e não executarão operações destrutivas em produção.
+
+\section{Protocolo de avaliação}
+\label{sec:protocolo}
+
+Na avaliação do TCC II, empregarei um recorte do modelo de qualidade de produto da ISO/IEC 25010:2023 \cite{ISO25010_2023}. A escolha das dimensões decorre do risco de operações incorretas, acesso indevido e perda de registros no domínio de estoques. Em cada execução, registrarei requisito, caso de teste, versão, pré-condições, entradas, resultado esperado, resultado obtido, evidência e conclusão. Casos bloqueados serão distinguidos dos aprovados e reprovados.
+
+\subsection{Preparação do ambiente e dos dados}
+
+Registrarei sistema operacional, processador, memória, versões do Python e do PostgreSQL, dependências, imagem de contêiner, navegador, configuração de rede e recursos atribuídos aos serviços. Uma base sintética terá produtos, categorias, fornecedores e usuários nos perfis necessários. O script de criação e sua semente, quando houver geração pseudoaleatória, serão preservados para reconstrução dos cenários.
+
+Para verificar a correção funcional, utilizarei uma base pequena com saldos previamente conhecidos. Para desempenho, prepararei dois conjuntos propostos: mil produtos com dez mil movimentações e dez mil produtos com cem mil movimentações. Esses volumes são parâmetros experimentais, sem pretensão de representar uma empresa específica. Alterações necessárias por restrição de recursos serão justificadas e registradas antes da coleta definitiva.
+
+\subsection{Adequação funcional e integridade}
+
+Incluirei nos testes operações válidas, entradas inválidas e condições de fronteira. Um caso básico partirá de saldo zero, registrará uma entrada de dez unidades e uma saída de três, esperando saldo sete. Em seguida, tentará uma saída de oito unidades, que deverá ser recusada sem alterar saldo ou histórico. Também serão verificadas quantidades nulas ou negativas, campos obrigatórios ausentes e referências inexistentes, conforme o tipo de operação.
+
+O teste de concorrência iniciará com cinco unidades e duas solicitações simultâneas de saída de quatro. O resultado esperado será uma única confirmação e saldo final um. A execução deverá comprovar sobreposição das operações, por sincronização das requisições e registro dos eventos; apenas enviar chamadas sequenciais não verificará o cenário. Falhas serão documentadas e novamente testadas após correção.
+
+Calcularei a proporção de aprovação $P = N_a/N_e \times 100$, em que $N_a$ é o número de casos aprovados e $N_e$ o número de casos executados. Se nenhum caso for executado, o indicador será não calculável. Também apresentarei números absolutos de casos planejados, bloqueados e não executados, evitando que a taxa esconda lacunas. O conjunto essencial somente será considerado atendido quando todos os seus critérios forem aprovados; a taxa global não compensará falhas de saldo ou autorização.
+
+\subsection{Eficiência de desempenho}
+
+Medirei operações de consulta de produtos, consulta de saldo, registro de movimentação e geração de relatório. Cada cenário combinará um dos volumes definidos com um ou cinco usuários virtuais, usando a mesma sequência de operações. Haverá cinco execuções de aquecimento, excluídas da análise, e trinta observações medidas por operação e cenário. Para escritas, a base será restaurada ou as entradas serão controladas para manter condições comparáveis.
+
+Medirei o tempo no cliente entre o envio da requisição HTTP e o recebimento completo da resposta, com identificação da ferramenta e de sua versão. Esse tempo não será apresentado como duração de renderização no navegador. Informarei mediana, mínimo, máximo, percentil 95 e taxa de erros, com preservação dos dados brutos. O percentil será calculado pelo método do posto mais próximo, posição $\lceil 0{,}95n \rceil$ na amostra ordenada. Respostas com falha serão contabilizadas separadamente e não descartadas sem registro.
+
+As trinta observações fornecerão uma caracterização exploratória; não serão utilizadas para afirmar capacidade máxima, estabilidade prolongada ou desempenho de todas as instalações. Sem ensaio equivalente das soluções de mercado, seus tempos não serão comparados aos do Estoque Fácil.
+
+\subsection{Segurança e confiabilidade}
+
+No roteiro de segurança, selecionarei requisitos aplicáveis do OWASP ASVS 5.0.0, mantendo os identificadores completos e as justificativas de inclusão \cite{OWASPASVS2025}. Verificarei rejeição de acesso sem sessão, permissões por perfil, encerramento de sessão, tratamento de entradas e proteção das operações de alteração. Também testarei o acesso por URL direta além da navegação pelos menus. Se houver operação multiempresa, registros de uma empresa sintética não deverão ser consultados ou alterados por usuário de outra.
+
+Para confiabilidade, observarei os efeitos de uma falha controlada durante a gravação e da reinicialização do serviço após uma transação confirmada. O primeiro cenário deverá preservar o estado anterior ou concluir integralmente a operação; o segundo deverá conservar os registros confirmados. Caso o backup integre a versão avaliada, a cópia será restaurada em banco isolado e conferida por contagens, identificadores e saldos. A existência do arquivo de backup não será tomada como comprovação de recuperação.
+
+\subsection{Interação e manutenibilidade}
+
+Na inspeção da interface, verificarei navegação por teclado, identificação dos campos, mensagens de validação, confirmação de operações e acesso a tabelas nas larguras de 360, 768 e 1366 pixels. No registro, incluirei navegador, tarefa, problema identificado e captura de tela. Esses resultados serão relatados como inspeção técnica. A distinção entre inspeção e usabilidade em contexto de uso seguirá a definição da ISO 9241-11:2018 \cite{ISO9241_11}; satisfação e facilidade percebida não serão inferidas sem usuários.
+
+Examinarei a manutenibilidade por inspeção da localização das regras, duplicações relevantes, dependências entre módulos e correspondência entre alterações e testes. Uma alteração delimitada em regra de validação será acompanhada desde o requisito até sua verificação, registrando os módulos afetados e eventuais regressões. O número de arquivos alterados será interpretado em seu contexto, sem funcionar isoladamente como nota de qualidade.
+
+\section{Análise dos dados e apresentação dos resultados}
+
+Organizarei os dados qualitativos por categorias: necessidade, requisito, decisão, evidência e limitação. Na análise, confrontarei documentação, código e comportamento observado, registrando divergências. Por exemplo, uma função anunciada no README, mas não executável no ambiente de teste, será apresentada com essa restrição, sem ser automaticamente classificada como atendida.
+
+Apresentarei os dados quantitativos por cenário, com contagens e estatísticas descritivas. Na discussão, explicarei quais requisitos foram atendidos, quais falharam e quais permaneceram sem evidência. Após correções, os resultados anteriores serão preservados e associados à versão correspondente. O estudo não atribuirá causalmente melhoria de qualidade a uma tecnologia sem um desenho de comparação que sustente essa conclusão.
+
+Na comparação documental com outras soluções, utilizarei os mesmos critérios e distinguirei recursos anunciados de recursos verificados por execução. Sua finalidade será situar o escopo e as limitações do Estoque Fácil. Como produto final da análise, apresentarei matriz de requisitos, registros de decisões, relatório de testes e síntese das limitações e possibilidades de evolução.
+
+\section{Reprodutibilidade e ameaças à validade}
+
+Preservarei o identificador da versão, diferenças locais relevantes, arquivos de configuração sem segredos, dependências, scripts de dados, casos de teste, logs e medições brutas. Imagens de contêiner serão identificadas por etiqueta e, quando disponível, por resumo criptográfico. Documentos externos serão registrados com endereço, edição e data de acesso. Esses materiais permitirão reconstruir as condições descritas, respeitando as restrições de acesso ao repositório.
+
+Na discussão de validade, seguirei a preocupação com planejamento e transparência do estudo de caso destacada por \citeonline{RunesonHost2009}. Neste projeto, reconheço como ameaças principais meu duplo papel de desenvolvedor e avaliador, a escolha intencional das soluções comparadas, o uso de dados sintéticos e a avaliação de uma única aplicação. Critérios prévios, manutenção dos resultados negativos e revisão pelo orientador reduzirão interpretações favoráveis não sustentadas.
+
+As métricas selecionadas cobrem apenas parte da qualidade do produto. Tempos de resposta não representam satisfação, e aprovação em cenários funcionais não demonstra ausência de defeitos. Limitarei as conclusões à versão, ao ambiente e aos casos executados. A generalização será analítica, pela discussão das decisões e de suas condições de aplicação, sem extrapolação estatística para empresas ou usuários da região.
+
+\section{Aspectos éticos e tratamento das informações}
+
+O protocolo principal utiliza documentos, código e dados sintéticos, sem recrutamento de participantes ou importação de bases reais de clientes. Revisarei logs e capturas de tela para evitar divulgação de credenciais, tokens e informações pessoais. Restringirei os testes de acesso ao ambiente experimental autorizado.
+
+Uma eventual etapa com entrevistas, questionários ou tarefas realizadas por usuários exigirá protocolo complementar, com objetivo, seleção dos participantes, instrumentos, consentimento e tratamento dos dados definidos antes da coleta, observadas as exigências institucionais aplicáveis. Essa etapa não integra os resultados previstos como já disponíveis. Na sua ausência, as conclusões permanecerão limitadas à análise documental e à avaliação técnica descritas neste capítulo.

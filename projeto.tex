@@ -69,6 +69,8 @@
 \usepackage{pdfpages}
 \usepackage{adjustbox}
 % pacotes adicionados
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric}
 \usepackage{amsmath}
 \usepackage{amssymb,amsfonts,amsthm}
 \usepackage{setspace}
@@ -92,9 +94,7 @@
 \renewcommand{\rm}[1]{\mathrm{#1}}
 
 
-\usepackage{cite}
-\renewcommand\citeleft{[}
-\renewcommand\citeright{]}
+% Citações autor-data são gerenciadas exclusivamente pelo abntex2cite.
 
 % --- 
 % CONFIGURAÇÕES DE PACOTES
@@ -170,8 +170,16 @@
 \begin{document}
 
 % Seleciona o idioma do documento (conforme pacotes do babel)
-%\selectlanguage{english}
 \selectlanguage{english}
+
+% Mantém os títulos em português no ambiente sem brazilian.ldf.
+\renewcommand{\chaptername}{Capítulo}
+\renewcommand{\tablename}{Tabela}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\contentsname}{Sumário}
+\renewcommand{\listfigurename}{Lista de ilustrações}
+\renewcommand{\listtablename}{Lista de tabelas}
+\renewcommand{\bibname}{Referências}
 
 % Retira espaço extra obsoleto entre as frases.
 \frenchspacing 

@@ -1,0 +1,25 @@
+\begin{tikzpicture}[x=1cm,y=1cm,scale=0.89,transform shape,
+  caso/.style={draw,ellipse,align=center,minimum width=3.2cm,minimum height=0.78cm,font=\scriptsize},
+  ator/.style={font=\scriptsize,align=center},
+  associacao/.style={thin}]
+  \draw (2.5,-0.65) rectangle (14.2,8.35);
+  \node[anchor=north west,font=\footnotesize\bfseries] at (2.7,8.2) {Estoque Fácil -- operação e consulta};
+  \node[ator] (vis) at (1.15,6.15) {\begin{tikzpicture}[scale=.55]\draw (0,0) circle (.22);\draw (0,-.22)--(0,-.9) (-.48,-.42)--(.48,-.42) (0,-.9)--(-.42,-1.42) (0,-.9)--(.42,-1.42);\end{tikzpicture}\\Visualizador};
+  \node[ator] (op) at (1.15,2.05) {\begin{tikzpicture}[scale=.55]\draw (0,0) circle (.22);\draw (0,-.22)--(0,-.9) (-.48,-.42)--(.48,-.42) (0,-.9)--(-.42,-1.42) (0,-.9)--(.42,-1.42);\end{tikzpicture}\\Operador};
+  \node[ator] (visdir) at (15.55,6.15) {\begin{tikzpicture}[scale=.55]\draw (0,0) circle (.22);\draw (0,-.22)--(0,-.9) (-.48,-.42)--(.48,-.42) (0,-.9)--(-.42,-1.42) (0,-.9)--(.42,-1.42);\end{tikzpicture}\\Visualizador};
+  \node[ator] (opdir) at (15.55,2.05) {\begin{tikzpicture}[scale=.55]\draw (0,0) circle (.22);\draw (0,-.22)--(0,-.9) (-.48,-.42)--(.48,-.42) (0,-.9)--(-.42,-1.42) (0,-.9)--(.42,-1.42);\end{tikzpicture}\\Operador};
+  \node[caso] (saldo) at (5.25,6.9) {Consultar saldo atual};
+  \node[caso] (hist) at (10.65,6.9) {Consultar histórico\\de movimentações};
+  \node[caso] (rel) at (5.25,5.45) {Consultar e exportar\\relatórios};
+  \node[caso] (lotes) at (10.65,5.45) {Consultar lotes\\e vencimentos};
+  \node[caso] (prod) at (5.25,3.8) {Manter produtos\\e importar arquivo};
+  \node[caso] (entrada) at (10.65,3.8) {Registrar entrada};
+  \node[caso] (saida) at (5.25,2.35) {Registrar saída para\\setor e funcionário};
+  \node[caso] (xml) at (10.65,2.35) {Importar NF-e em XML};
+  \node[caso] (inv) at (5.25,0.9) {Conferir inventário\\e ajustar divergências};
+  \node[caso] (pedido) at (10.65,0.9) {Gerir pedidos\\de reposição};
+  \foreach \n in {saldo,rel} \draw[associacao] (vis.east)--(\n.west);
+  \foreach \n in {hist,lotes} \draw[associacao] (visdir.west)--(\n.east);
+  \foreach \n in {prod,saida,inv} \draw[associacao] (op.east)--(\n.west);
+  \foreach \n in {entrada,xml,pedido} \draw[associacao] (opdir.west)--(\n.east);
+\end{tikzpicture}

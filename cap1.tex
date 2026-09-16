@@ -1,43 +1,60 @@
 \chapter{Introdução}
 
-A gestão de estoques é uma atividade relevante para organizações que precisam controlar produtos, materiais, entradas, saídas e disponibilidade de recursos. Apesar da ampla oferta de sistemas, diferentes organizações possuem necessidades, restrições e níveis de complexidade próprios. Nesse contexto, o desenvolvimento de uma solução web constitui uma oportunidade para relacionar demandas do domínio, requisitos, decisões arquiteturais, tecnologias e critérios de qualidade de software.
+A gestão de estoques envolve a disponibilidade de produtos e materiais necessários às operações e os recursos comprometidos com sua aquisição e armazenamento. A literatura de administração relaciona esse controle ao equilíbrio entre manter itens suficientes para atender às necessidades e evitar custos excessivos de manutenção do estoque \cite{OpenStaxEstoques}. Para organizações que utilizam materiais de consumo, conhecer o saldo disponível e o destino das retiradas também é relevante para acompanhar o uso dos recursos.
 
-Este trabalho tem como objeto de estudo o Estoque Fácil, um sistema web para gestão e controle de estoques. O projeto será analisado como estudo de caso de desenvolvimento de software, considerando as demandas que fundamentaram sua concepção, as decisões tecnológicas e arquiteturais adotadas e a avaliação de características de qualidade.
+Entre os meios disponíveis para realizar esse controle estão fichas físicas, registros digitais, planilhas e sistemas de gestão. O Sebrae recomenda registrar entradas e saídas, identificar quem retira os materiais e conferir periodicamente o saldo registrado com a quantidade física \cite{SebraeControle2026}. A instituição também disponibiliza planilhas destinadas à organização de estoques de pequenos negócios \cite{SebraePlanilhas}. Essas fontes documentam alternativas e práticas de controle; não constituem um levantamento sobre a frequência de uso dessas ferramentas nas empresas de Sinop ou do norte de Mato Grosso.
+
+Defini a motivação inicial deste projeto a partir da minha experiência profissional no suporte a um sistema ERP em Sinop, Mato Grosso. Nesse trabalho, percebi informalmente situações em que empresas atendidas precisavam realizar contagens recorrentes para apurar quantidades disponíveis e encontravam dificuldade para consultar tempo de permanência dos produtos no estoque, valores contábeis e classificação por curva ABC. Também observei essas dificuldades em empresas de médio porte e, de forma mais acentuada, em alguns pequenos negócios. Registro essa experiência como observação profissional exploratória, sem protocolo de coleta, amostra definida ou dados quantitativos que permitam estimar a frequência do problema na cidade ou comparar portes de empresa.
+
+Nesse contexto, o público pretendido pelo Estoque Fácil compreende pequenas e médias organizações e equipes que precisam acompanhar produtos e materiais, especialmente retiradas destinadas ao consumo interno. O responsável pelo estoque registra recebimentos e saídas; funcionários e setores são identificados como destinatários quando pertinente; e o gestor consulta saldos e histórico. Essa descrição orienta os cenários do projeto, mas não representa uma caracterização estatística das empresas que atendi.
+
+O problema operacional selecionado para o TCC é a dificuldade de reconstruir o percurso de um item quando quantidade inicial, entradas, retiradas e destinatário não são registrados de maneira consistente. O Sebrae recomenda anotar as operações, identificar quem retira os materiais e investigar diferenças entre saldo físico e registrado \cite{SebraeControle2026}. Minha experiência profissional ajudou a formular essa questão; a referência externa sustenta a relevância das práticas de controle. A ocorrência, as causas e a intensidade do problema em cada empresa exigiriam investigação específica.
+
+As lacunas percebidas quanto a tempo de armazenamento, valores contábeis e curva ABC são registradas como demandas candidatas. A versão avaliada poderá oferecer dados parciais para algumas análises, mas o TCC não presumirá que implementa cálculo contábil completo, relatório de envelhecimento de estoque ou curva ABC validada. A definição desses recursos como requisitos futuros dependerá da documentação das regras, dos dados necessários e de sua prioridade em relação ao escopo inicial.
+
+Sistemas de informação podem reunir registros operacionais e produzir informações para acompanhamento e decisão \cite{OpenStaxSI}. Entretanto, a existência de soluções como Bling, Conta Azul, Omie, Odoo e ERPNext, discutidas no Capítulo~\ref{cap:referencial}, mostra que o problema de pesquisa não pode ser justificado pela ausência de sistemas de estoque. Neste trabalho, investigarei a adequação de uma solução de escopo delimitado ao controle de consumo interno, documentarei as escolhas realizadas e verificarei o atendimento dos requisitos selecionados.
+
+Adoto como objeto de estudo o Estoque Fácil, protótipo web que venho desenvolvendo e cuja base de código já contém cadastros, movimentações, consultas e relatórios \cite{EstoqueFacilRepositorio}. O sistema ainda não constitui um produto concluído, implantado e validado. No TCC I, utilizo essa base para delimitar o problema, fundamentar a proposta, documentar a arquitetura e planejar os requisitos e a avaliação. No TCC II, pretendo implementar as complementações priorizadas e avaliar uma versão identificada do protótipo. A Seção~\ref{sec:estado-contribuicao} distingue o código que já desenvolvi das entregas acadêmicas previstas.
 
 \section{Problema de pesquisa}
 
-Soluções de gestão de estoques precisam apoiar o registro e a consulta de informações de forma consistente, compreensível e adequada ao contexto de seus usuários. Entretanto, a simples implementação de funcionalidades não demonstra que uma solução atende aos requisitos, nem explica se suas escolhas arquiteturais e tecnológicas são apropriadas.
+A disponibilidade de uma funcionalidade no código não demonstra que suas regras sejam atendidas em todos os cenários relevantes. A engenharia de software propõe a especificação e a verificação de requisitos, enquanto modelos de qualidade permitem organizar características a serem avaliadas \cite{SWEBOK2026,ISO25010_2023}. No Estoque Fácil, permanecem como questões de investigação a consistência dos saldos, a rastreabilidade das retiradas, a adequação das permissões e a correspondência entre decisões técnicas e necessidades documentadas.
 
-Diante disso, formula-se a seguinte questão: \textbf{como projetar, desenvolver e avaliar o sistema web Estoque Fácil a partir de demandas identificadas no domínio, justificando as decisões tecnológicas e arquiteturais adotadas e analisando suas características segundo critérios de qualidade de software?}
+Diante disso, formula-se a seguinte questão: \textbf{como posso evoluir e avaliar o protótipo web Estoque Fácil, a partir da base de código que já desenvolvi, da minha observação profissional exploratória e de demandas documentadas do domínio, justificando as decisões arquiteturais e verificando sua adequação ao controle de estoques para consumo interno?}
 
 \section{Pressuposto}
 
-Parte-se do pressuposto de que a identificação prévia de demandas, aliada à aplicação de princípios de engenharia de software e à escolha fundamentada de tecnologias e decisões arquiteturais, contribui para o desenvolvimento de uma solução de gestão de estoque adequada aos requisitos definidos para seu contexto de utilização. A pesquisa buscará analisar esse pressuposto ao longo do desenvolvimento e da avaliação do sistema.
+Parto do pressuposto de que explicitar requisitos, relacioná-los às decisões de implementação e verificar seu atendimento pode contribuir para a adequação do Estoque Fácil ao contexto de uso proposto. No TCC II, examinarei esse pressuposto com evidências da versão avaliada, sem atribuir causalmente benefícios organizacionais à aplicação ou presumir redução de custos, perdas e tempo de trabalho sem medições específicas.
 
-\section{Objetivo}
+\section{Objetivos}
 \subsection{Objetivo geral}
 
-Projetar, desenvolver e avaliar o software Estoque Fácil, um sistema web para gestão e controle de estoques, a partir da identificação de demandas relacionadas ao domínio, justificando as decisões tecnológicas e arquiteturais adotadas e analisando suas características segundo critérios de qualidade de software.
+Evoluir, documentar e avaliar o protótipo web Estoque Fácil, a partir da base de código que já desenvolvi, da minha observação profissional exploratória em Sinop e de demandas documentadas relacionadas ao controle de estoques para consumo interno, justificando suas decisões arquiteturais e tecnológicas e verificando o atendimento dos requisitos e critérios de qualidade definidos.
 
 \subsection{Objetivos específicos}
 \begin{itemize}
-    \item investigar problemas e necessidades relacionados à gestão e ao controle de estoques;
-    \item realizar levantamento bibliográfico sobre gestão de estoques, sistemas de informação, engenharia e qualidade de software;
-    \item identificar e analisar soluções de gestão de estoque existentes;
-    \item levantar e documentar requisitos funcionais e não funcionais para o Estoque Fácil;
-    \item definir e justificar as tecnologias utilizadas no desenvolvimento;
-    \item projetar a arquitetura e o modelo de dados da aplicação;
-    \item desenvolver as funcionalidades definidas para o sistema;
-    \item documentar as principais decisões arquiteturais adotadas;
-    \item estabelecer critérios para avaliação da qualidade do software;
+    \item caracterizar a motivação que observei e, com base em fontes bibliográficas e documentais, problemas e práticas de controle de estoques pertinentes ao contexto proposto;
+    \item analisar recursos de soluções existentes e sua relação com o escopo do Estoque Fácil;
+    \item identificar o estado inicial da aplicação e delimitar as correções, complementações e avaliações que constituem a contribuição do TCC;
+    \item consolidar requisitos funcionais e não funcionais, com origem, prioridade e critérios de aceitação;
+    \item documentar a arquitetura, o modelo de dados e as decisões tecnológicas, distinguindo características observadas e alterações propostas;
+    \item implementar as correções e complementações priorizadas e organizar as verificações no fluxo de desenvolvimento;
+    \item executar os testes funcionais e os procedimentos de avaliação de qualidade definidos no protocolo;
+    \item analisar os resultados, registrar limitações e discutir a adequação da solução ao contexto delimitado.
 \end{itemize}
 
 \section{Justificativa}
 
-A gestão adequada de estoques contribui para a organização de produtos, a rastreabilidade das movimentações e a tomada de decisão. Sistemas de informação podem centralizar registros e disponibilizar informações para acompanhamento, reduzindo a dependência de controles dispersos.
+Do ponto de vista operacional, proponho responder à dificuldade de conferir saldos e recuperar informações sobre movimentações que percebi durante minha atuação no suporte a ERP em Sinop. Concentra-se na possibilidade de relacionar movimentação, destino e saldo de materiais. A identificação das retiradas e a conferência dos registros com o estoque físico são práticas recomendadas para o controle de estoques \cite{SebraeControle2026}. Neste estudo, traduzo essas práticas em comportamentos verificáveis no software, como recuperar o histórico de um produto e conferir se uma saída aceita corresponde à redução esperada do saldo.
 
-O desenvolvimento do Estoque Fácil permite estudar o problema sob a perspectiva de Sistemas de Informação e Engenharia de Software, relacionando necessidades do domínio com requisitos, arquitetura, tecnologias e qualidade do produto. Do ponto de vista acadêmico, o trabalho documenta e analisa o processo de desenvolvimento de uma aplicação web real, sem limitar a pesquisa à implementação.
+Do ponto de vista técnico, utilizo o protótipo já iniciado para examinar decisões concretas de persistência, organização de módulos, interface e implantação. A contribuição não está apenas na adoção de tecnologias, mas na relação documentada entre requisito, escolha, implementação e evidência. O modelo de qualidade de produto da ISO/IEC 25010:2023 oferece uma referência para organizar esse recorte de avaliação \cite{ISO25010_2023}.
+
+Do ponto de vista acadêmico, o trabalho permitirá acompanhar a evolução de um artefato de software mediante um estudo de caso, abordagem discutida por \citeonline{RunesonHost2009}. Os resultados esperados incluem uma versão identificada da aplicação, requisitos rastreáveis, diagramas, registros de decisões e relatório de avaliação. Esses produtos podem tornar explícitas tanto as contribuições quanto as limitações do desenvolvimento realizado.
+
+A observação profissional exploratória não comprova a prevalência regional do problema; a escolha de um escopo voltado ao consumo interno também não implica superioridade sobre sistemas integrados. Sua pertinência será discutida à luz dos requisitos e dos resultados obtidos; conclusões sobre aceitação, satisfação e benefícios econômicos dependerão de investigação adicional com organizações e usuários.
 
 \section{Delimitação}
 
-O estudo será delimitado ao sistema Estoque Fácil e às funcionalidades efetivamente implementadas e documentadas durante o período do TCC. A avaliação será realizada com critérios previamente definidos; não serão inventados resultados de usuários, desempenho ou qualidade que ainda não tenham sido medidos.
+Delimito o estudo à evolução e à avaliação técnica de uma versão selecionada do protótipo Estoque Fácil, incluindo cadastros, entradas, retiradas, saldos, histórico, relatórios e os vínculos necessários à análise por setor e funcionário. As entregas serão delimitadas pelo quadro de estado e contribuição do Capítulo~\ref{cap:metodologia}. Tratarei a base de código anterior ao TCC como ponto de partida, sem contabilizar suas funcionalidades como produção nova desta pesquisa.
+
+No TCC II, utilizarei documentos, inspeção do código e dados sintéticos na avaliação principal. Não estão incluídos levantamento representativo de empresas, mensuração de ganhos financeiros ou demonstração de satisfação de usuários. Eventual pesquisa com participantes exigirá protocolo complementar. O cronograma apresentado no Capítulo~\ref{cap:cronograma} organiza as entregas propostas e deverá ser compatibilizado com os prazos acadêmicos confirmados.

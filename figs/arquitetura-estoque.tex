@@ -1,0 +1,14 @@
+\begin{tikzpicture}[>=stealth, every node/.style={font=\small}, box/.style={draw,rounded corners,align=center,minimum height=1cm,text width=5.2cm,fill=blue!4}, node distance=0.8cm]
+\node[box] (browser) {Navegador\\Formulários, consultas e relatórios};
+\node[box,below=of browser] (routes) {FastAPI / Uvicorn\\Rotas, sessão e permissões};
+\node[box,below=of routes] (services) {Serviços de negócio\\Movimentações, inventário e reposição};
+\node[box,below=of services] (orm) {SQLAlchemy\\Modelos, sessões e consultas};
+\node[box,below=of orm] (db) {Banco relacional\\PostgreSQL no protocolo experimental};
+\node[draw,rounded corners,align=center,text width=3cm,right=1.5cm of routes,fill=gray!8] (templates) {Jinja2 + Bootstrap\\Geração de HTML};
+\draw[<->] (browser) -- node[right,font=\footnotesize] {HTTP / HTML} (routes);
+\draw[->] (routes) -- (services);
+\draw[->] (services) -- (orm);
+\draw[<->] (orm) -- (db);
+\draw[<->] (routes) -- (templates);
+\draw[->,dashed] (routes.west) -- ++(-0.65,0) |- node[pos=0.7,left,font=\footnotesize,align=right] {consultas diretas\\em algumas rotas} (orm.west);
+\end{tikzpicture}

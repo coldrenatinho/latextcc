@@ -1,24 +1,66 @@
 \chapter{Referencial teórico}
+\label{cap:referencial}
+
+Este capítulo apresenta os conceitos que fundamentam o projeto do Estoque Fácil. A discussão relaciona o controle de estoques à organização das informações, à engenharia de requisitos, à arquitetura web e à avaliação da qualidade. As tecnologias são examinadas em função de suas responsabilidades na solução, e a análise documental de sistemas existentes oferece referências para delimitar o escopo do estudo.
 
 \section{Gestão e controle de estoques}
 
-A gestão de estoques envolve o planejamento, o registro e o acompanhamento dos produtos e materiais mantidos por uma organização. Entre as informações relevantes estão o cadastro de itens, categorias, fornecedores, quantidades disponíveis e movimentações de entrada e saída. A qualidade dessas informações influencia o controle operacional e o apoio à tomada de decisão.
+A gestão de estoques procura conciliar a disponibilidade de materiais para as operações com os custos de aquisição e manutenção desses recursos. Estoques insuficientes podem interromper atividades, enquanto quantidades excessivas comprometem recursos e espaço de armazenamento. O planejamento precisa, portanto, considerar a demanda e as condições de reposição, em vez de se limitar à contagem dos itens disponíveis \cite{OpenStaxEstoques}.
 
-\section{Sistemas de informação}
+Neste trabalho, distingue-se o controle operacional, responsável pelos registros de produtos e movimentações, das decisões de planejamento, como definição de níveis de estoque e programação de compras. O Estoque Fácil concentra-se no primeiro: organizar informações que possam apoiar o segundo. A existência de um sistema informatizado não demonstra, por si só, redução de custos ou eliminação de rupturas; esses efeitos dependeriam de observação organizacional específica.
 
-Sistemas de informação integram pessoas, processos, dados e tecnologias para coletar, processar, armazenar e disponibilizar informações. No domínio de estoques, uma aplicação web pode centralizar operações e permitir o acesso por diferentes dispositivos, desde que requisitos de segurança, disponibilidade, usabilidade e desempenho sejam considerados.
+\subsection{Cadastros, movimentações e rastreabilidade}
+
+Para o escopo proposto, cada produto precisa ser identificado de forma consistente e associado a uma unidade de medida. Categorias e fornecedores complementam o cadastro, enquanto entradas e saídas registram alterações de quantidade. Uma movimentação deve permitir identificar o item, a quantidade, a natureza da operação, o momento do registro e o usuário responsável. Esses campos constituem requisitos de rastreabilidade adotados neste estudo.
+
+Considerando quantidades expressas na mesma unidade e um período de apuração definido, o saldo pode ser representado pela identidade:
+\begin{equation}
+    S_f = S_i + \sum_{j=1}^{n} E_j - \sum_{k=1}^{m} O_k + A,
+    \label{eq:saldo}
+\end{equation}
+em que $S_f$ é o saldo final, $S_i$ é o saldo inicial, $E_j$ corresponde a cada entrada, $O_k$ a cada saída e $A$ ao ajuste líquido documentado, positivo ou negativo. Se ajustes forem registrados como entradas e saídas, não deverão ser novamente contabilizados em $A$. A equação será utilizada como critério de conferência dos cenários de teste, não como modelo de previsão de demanda.
+
+Uma divergência entre quantidade física e quantidade registrada exige investigação e ajuste identificável. A documentação do ERPNext, por exemplo, contempla reconciliação de estoque e relatórios de movimentações, mostrando que a conferência é uma operação distinta do simples cadastro de produtos \cite{ERPNextStock}. Para o Estoque Fácil, isso fundamenta a necessidade de preservar o histórico e de impedir que alterações cadastrais eliminem a explicação dos saldos anteriores.
+
+\subsection{Informações para acompanhamento}
+
+O estoque mínimo será tratado como um parâmetro definido para cada produto. Um alerta de saldo abaixo desse parâmetro indica necessidade de atenção, mas não determina automaticamente a quantidade ideal de compra. A documentação do Odoo distingue regras de reposição e sugestões de abastecimento, recursos que dependem de configuração \cite{OdooReposicao}. Neste projeto, previsão de demanda, otimização de compras e apuração de ganhos financeiros não integram a avaliação inicial.
+
+\section{Sistemas de informação e aplicações web}
+
+Sistemas de informação articulam usuários, recursos tecnológicos e dados para apoiar operações e decisões. Sistemas de processamento de transações registram eventos operacionais, enquanto sistemas de informação gerencial consolidam dados para acompanhamento e análise \cite{OpenStaxSI}. No domínio estudado, o lançamento de uma saída constitui uma transação; um relatório de movimentações por período organiza essas transações para consulta.
+
+A centralização dos registros permite consultar uma base compartilhada, mas sua utilidade depende da identificação correta dos itens, da atualização das operações e das permissões de acesso. Para este trabalho, qualidade da informação significa, operacionalmente, que os relatórios devem refletir as movimentações confirmadas e que diferentes telas não devem apresentar saldos incompatíveis para o mesmo recorte de dados.
+
+Em uma aplicação web renderizada no servidor, o navegador envia uma requisição, a aplicação executa o processamento necessário e devolve uma página HTML. FastAPI oferece suporte a rotas e validação, enquanto Jinja permite gerar documentos a partir de templates e dados \cite{FastAPIDocs,JinjaDocs}. Essa combinação corresponde ao desenho documentado do Estoque Fácil. O uso do navegador facilita a distribuição da interface, mas mantém a dependência da conectividade e da disponibilidade do servidor.
 
 \section{Engenharia de requisitos}
 
-A engenharia de requisitos busca compreender necessidades dos envolvidos, documentar comportamentos esperados e estabelecer restrições para a solução \cite{Sommerville2019}. Requisitos funcionais descrevem serviços e operações que o sistema deve oferecer, enquanto requisitos não funcionais tratam de características como segurança, usabilidade, desempenho, confiabilidade, manutenibilidade e portabilidade.
+A engenharia de requisitos compreende elicitação, análise, especificação, validação e gestão das necessidades e restrições do software. O SWEBOK distingue requisitos funcionais e não funcionais e inclui priorização, critérios de aceitação e rastreabilidade entre as práticas de requisitos \cite{SWEBOK2026}. Essa referência permite organizar o desenvolvimento sem confundir uma lista de telas com uma especificação verificável.
 
-\section{Arquitetura de software}
+No Estoque Fácil, um requisito funcional pode estabelecer que o operador registre uma saída de produto. Uma regra de negócio associada determina que a quantidade solicitada não ultrapasse o saldo disponível. Já uma exigência de segurança define quais perfis podem executar essa operação. Embora relacionadas, essas condições precisam ser verificadas separadamente: uma tela pode registrar a saída corretamente e, ainda assim, permitir acesso indevido.
 
-Arquitetura de software corresponde à organização dos principais componentes de uma solução, suas responsabilidades e relações. A separação entre frontend, backend e banco de dados pode favorecer a organização do sistema, mas exige decisões sobre comunicação, autenticação, validação, persistência, tratamento de erros e implantação. Essas escolhas serão analisadas no Estoque Fácil por meio de decisões arquiteturais documentadas.
+Cada requisito do estudo terá identificador, origem, descrição, prioridade e critério de aceitação. Na origem, distinguirei demanda documentada, regra do domínio e decisão que tomei como pesquisador e desenvolvedor. A rastreabilidade será materializada pela ligação entre requisito, alteração no software e caso de teste. Uma funcionalidade observada em outro produto será considerada candidata à análise, sem ser automaticamente interpretada como necessidade das organizações da região.
+
+\section{Arquitetura de software e persistência}
+
+O SWEBOK aborda a arquitetura a partir de estruturas, perspectivas e decisões relevantes para o sistema, relacionando sua descrição à avaliação das preocupações dos envolvidos \cite{SWEBOK2026}. Neste estudo, analisarei a arquitetura pela distribuição das responsabilidades de apresentação, processamento de regras e persistência. Essa separação lógica não exige que cada responsabilidade seja implantada como um serviço independente.
+
+Tratarei o protótipo Estoque Fácil como uma aplicação integrada com organização interna por módulos. Para uma equipe pequena, esse desenho permite concentrar execução e implantação em uma unidade. A contrapartida é que mudanças mal delimitadas podem afetar diferentes funcionalidades. Por isso, verificarei na análise onde se encontram as regras de saldo, as verificações de autorização e as consultas ao banco, em vez de presumir que a simples existência de pastas assegura modularidade.
+
+\subsection{Integridade e concorrência}
+
+Uma transação agrupa operações que precisam ser confirmadas ou desfeitas em conjunto. O SQLAlchemy oferece controle de sessões com confirmação e reversão; o PostgreSQL dispõe de níveis de isolamento com diferentes comportamentos diante de operações concorrentes \cite{SQLAlchemyDocs,PostgreSQLIsolation}. Esses mecanismos precisam ser empregados de acordo com a regra de negócio.
+
+Considere, como cenário de teste proposto, duas solicitações de retirada de quatro unidades de um produto cujo saldo seja cinco. Se ambas consultarem o mesmo saldo antes de registrar a saída, uma validação isolada poderá aceitar operações incompatíveis. O resultado esperado neste estudo é que apenas uma retirada seja confirmada, preservando uma unidade. A solução técnica poderá envolver bloqueio, atualização condicional ou isolamento apropriado, conforme a estrutura efetivamente utilizada; a adoção de PostgreSQL, isoladamente, não comprova a correção desse comportamento.
+
+\subsection{Registro das decisões}
+
+Registrarei as decisões arquiteturais com contexto, alternativas, escolha, justificativa e consequências. Para este estudo, a decisão de renderizar HTML no servidor será relacionada ao predomínio de formulários e consultas; a escolha do banco será relacionada à integridade e à concorrência; e o uso de contêineres será relacionado à reconstrução do ambiente. Benefícios esperados serão distinguidos dos resultados observados na avaliação.
 
 \section{Tecnologias do Estoque Fácil}
 
-O README e a documentação técnica do repositório foram consultados para identificar as tecnologias efetivamente utilizadas, evitando atribuir ao projeto uma arquitetura apenas planejada. O Estoque Fácil é uma aplicação web renderizada no servidor. As requisições são recebidas pelas rotas do FastAPI, que acionam serviços e modelos, consultam o banco por meio do SQLAlchemy e renderizam páginas HTML com Jinja2 e Bootstrap 5. O projeto utiliza Python 3.13, FastAPI, SQLAlchemy, PostgreSQL, Jinja2, Bootstrap 5, Uvicorn, OpenPyXL, Docker e Docker Compose \cite{EstoqueFacilRepositorio}.
+Para caracterizar tecnicamente o protótipo, considero o README, os arquivos de configuração, a documentação e o código da cópia local do repositório do Estoque Fácil, consultada em 16 de setembro de 2026 \cite{EstoqueFacilRepositorio}. Como o código permanece em desenvolvimento, registrarei a versão exata selecionada antes dos testes do TCC II e confrontarei as descrições documentais com o comportamento observado. O Estoque Fácil é uma aplicação web renderizada no servidor. As requisições são recebidas pelas rotas do FastAPI, que acionam serviços e modelos, consultam o banco por meio do SQLAlchemy e renderizam páginas HTML com Jinja2 e Bootstrap 5. O protótipo utiliza Python 3.13, FastAPI, SQLAlchemy, PostgreSQL, Jinja2, Bootstrap 5, Uvicorn, OpenPyXL, Docker e Docker Compose.
 
 \subsection{Python 3.13}
 
@@ -32,7 +74,7 @@ Uvicorn é utilizado como servidor ASGI para executar a aplicação FastAPI \cit
 
 \subsection{SQLAlchemy e PostgreSQL}
 
-SQLAlchemy realiza o mapeamento entre classes Python e estruturas relacionais, além de controlar sessões, consultas e transações \cite{SQLAlchemyDocs}. A camada de persistência utiliza PostgreSQL tanto no desenvolvimento quanto na produção. Essa uniformidade reduz diferenças de comportamento entre os ambientes, especialmente em tipos de dados, restrições, transações e consultas. O banco de cada ambiente, entretanto, permanece isolado em sua própria pilha Docker, com credenciais e volumes persistentes distintos. O uso de um ORM reduz a quantidade de SQL espalhado pelas rotas e favorece a centralização das regras de acesso aos dados, mas não dispensa conhecimento de SQL, índices, transações ou análise das consultas produzidas.
+SQLAlchemy realiza o mapeamento entre classes Python e estruturas relacionais, além de controlar sessões, consultas e transações \cite{SQLAlchemyDocs}. Para os experimentos que pretendo executar no TCC II, adotarei PostgreSQL no desenvolvimento e na homologação, com bancos, credenciais e volumes separados. Essa é uma padronização metodológica: na cópia local consultada, o README e o arquivo \path{app/config.py} ainda definem SQLite como alternativa padrão de execução sem configuração adicional. Portanto, cada execução deverá registrar a configuração efetiva do banco. O uso de um ORM reduz a quantidade de SQL espalhado pelas rotas e favorece a centralização das regras de acesso aos dados, mas não dispensa conhecimento de SQL, índices, transações ou análise das consultas produzidas.
 
 PostgreSQL foi escolhido como banco principal por oferecer transações, restrições de integridade, controle de concorrência e recursos adequados à centralização de dados relacionais \cite{PostgreSQLDocs}. Essas propriedades são importantes porque entradas, saídas, inventários, lotes e saldos precisam permanecer consistentes mesmo quando diferentes usuários operam o sistema. Sua utilização demanda administração, credenciais, backup e monitoramento, custos operacionais parcialmente organizados pelo Docker Compose e pelo serviço de backup da aplicação.
 
@@ -50,7 +92,7 @@ OpenPyXL permite ler e produzir arquivos de planilha no formato XLSX \cite{OpenP
 
 Docker empacota a aplicação e suas dependências em uma imagem, enquanto Docker Compose descreve os serviços web e PostgreSQL, redes, volumes persistentes, variáveis e dependências de inicialização \cite{DockerComposeDocs}. O arquivo \path{docker-compose.yml} permite construir e executar localmente a aplicação e o PostgreSQL. O arquivo \path{docker-compose.prod.yml}, parametrizado por variáveis de ambiente e pela imagem publicada, serve de base para as pilhas remotas de desenvolvimento/homologação e produção. Cada pilha possui projeto Compose, banco e volumes próprios. Essa configuração reduz diferenças entre ambientes e facilita a reconstrução da aplicação. Em contrapartida, contêineres acrescentam uma camada operacional e não substituem rotinas de atualização, backup, observabilidade e proteção dos segredos.
 
-O fluxo de desenvolvimento definido para o projeto começa com a abertura de uma \textit{issue}. A partir dela, o desenvolvedor cria uma branch de funcionalidade ou correção e abre um \textit{pull request} para a branch \texttt{developer}, utilizada como integração e ambiente de desenvolvimento/homologação. O código passa por revisão e, após o aceite do \textit{merge}, por análises e testes. Somente uma versão validada deve ser promovida para a branch \texttt{main}, que representa a produção. Esse fluxo procura impedir que alterações ainda não verificadas sejam implantadas diretamente no ambiente produtivo.
+Defino o fluxo de desenvolvimento a partir da abertura de uma \textit{issue}. Para cada demanda, criarei uma branch de funcionalidade ou correção e abrirei um \textit{pull request} para a branch \texttt{developer}, utilizada como integração e ambiente de desenvolvimento/homologação. O código passa por revisão e, após o aceite do \textit{merge}, por análises e testes. Somente uma versão validada deve ser promovida para a branch \texttt{main}, que representa a produção. Esse fluxo procura impedir que alterações ainda não verificadas sejam implantadas diretamente no ambiente produtivo.
 
 O repositório utiliza GitHub Actions para automatizar a construção e a publicação das imagens no GitHub Container Registry \cite{GitHubActionsDocs,GitHubContainerRegistry}. A imagem recebe uma etiqueta associada ao \textit{commit} e outra correspondente à branch. Em seguida, o workflow seleciona as variáveis e os segredos do ambiente, transfere o arquivo Compose para a instância remota e executa a atualização dos contêineres. Dessa maneira, os ambientes integrados utilizam imagens produzidas pelo mesmo processo automatizado, mas mantêm domínios, credenciais, bancos e volumes separados.
 
@@ -58,12 +100,133 @@ Na versão do workflow consultada durante a elaboração deste projeto, o gatilh
 
 Na infraestrutura prevista, uma instância Amazon EC2 executa os contêineres, oferecendo capacidade computacional configurável na nuvem \cite{AWSEC2Docs}. O Traefik atua como proxy reverso, encaminhando requisições ao contêiner, separando domínios e habilitando HTTPS \cite{TraefikDocs}. Essas escolhas são justificadas pela infraestrutura já utilizada pelo projeto, e não pela afirmação de que sejam as únicas alternativas possíveis. Serviços gerenciados, outras nuvens ou hospedagem local deverão ser comparados quanto a custo, disponibilidade, conhecimento da equipe e esforço de manutenção.
 
-As decisões serão avaliadas pela relação entre problema, requisito, alternativas, justificativa, implementação, benefício esperado e limitação observada. Dessa forma, a tecnologia não é tratada como finalidade do trabalho, mas como meio para atender requisitos de funcionalidade, segurança, manutenção, portabilidade e implantação.
+Avaliarei as decisões pela relação entre problema, requisito, alternativas, justificativa, implementação, benefício esperado e limitação observada. Dessa forma, a tecnologia não é tratada como finalidade do trabalho, mas como meio para atender requisitos de funcionalidade, segurança, manutenção, portabilidade e implantação.
 
 \section{Qualidade de software}
+\label{sec:qualidade}
 
-A qualidade de software deve ser analisada em relação a características e critérios observáveis, conforme modelos de qualidade como a ISO/IEC 25010 \cite{ISO25010}. Para este estudo, poderão ser considerados adequação funcional, eficiência de desempenho, compatibilidade, usabilidade, confiabilidade, segurança e manutenibilidade. Os critérios e instrumentos serão definidos antes da avaliação, de acordo com a disponibilidade do sistema e com a orientação acadêmica.
+A ISO/IEC 25010:2023 apresenta um modelo de qualidade de produto composto por nove características, subdivididas em subcaracterísticas, que oferece uma referência para especificação, medição e avaliação \cite{ISO25010_2023}. Este trabalho adota a edição de 2023 como referência de organização dos critérios. O recorte proposto não constitui certificação nem avaliação integral da norma.
 
-\section{Trabalhos e soluções existentes}
+Na avaliação do TCC II, priorizarei adequação funcional, eficiência de desempenho, confiabilidade, segurança e manutenibilidade, além de aspectos de interação. Para o Estoque Fácil, esses eixos serão traduzidos, respectivamente, em correção das operações, tempos de resposta, preservação dos registros diante de falhas, controle de acesso, organização das alterações e possibilidade de executar tarefas na interface. Os procedimentos e as métricas são definidos no Capítulo~\ref{cap:metodologia}.
 
-O levantamento de mercado deverá identificar soluções de gestão de estoque e registrar critérios como funcionalidades, público-alvo, facilidade de uso, relatórios, integrações, disponibilidade web, modelo de comercialização e características técnicas publicamente disponíveis. A comparação terá finalidade analítica e não deverá atribuir características que não possam ser verificadas nas fontes consultadas.
+\subsection{Usabilidade e interação}
+
+A ISO 9241-11:2018 trata a usabilidade em relação à eficácia, à eficiência e à satisfação em um contexto de uso especificado \cite{ISO9241_11}. Assim, uma interface responsiva não é evidência suficiente de usabilidade: ela pode ajustar-se à tela e continuar apresentando mensagens incompreensíveis ou uma sequência de operações difícil de executar.
+
+Neste projeto, considerarei na inspeção identificação de campos, mensagens de erro, confirmação de ações e acesso às tarefas principais. Distinguirei a avaliação técnica dessas condições de uma avaliação com usuários. Sem participação de usuários, não serão produzidas conclusões sobre satisfação, facilidade percebida ou aceitação do produto.
+
+\subsection{Segurança e verificação}
+
+O OWASP Application Security Verification Standard oferece requisitos para verificação da segurança de aplicações. Seus identificadores devem ser associados à versão utilizada, pois podem mudar entre edições \cite{OWASPASVS2025}. No TCC II, utilizarei a versão 5.0.0 para selecionar verificações aplicáveis à autenticação, às sessões, à autorização e ao tratamento de entradas, registrando o subconjunto efetivamente analisado.
+
+Para o Estoque Fácil, os testes deverão distinguir autenticação, que identifica o usuário, de autorização, que limita as operações permitidas. Ocultar uma opção de menu não será aceito como controle suficiente: o acesso direto à operação deverá ser verificado. Também serão considerados dados de empresas distintas quando o recurso multiempresa fizer parte da versão avaliada. Os testes previstos não equivalem a uma auditoria exaustiva de segurança.
+
+\section{Sistemas de estoque existentes e análise comparativa}
+\label{sec:mercado}
+
+No levantamento documental que realizei em 16 de setembro de 2026, considerei cinco soluções: Bling, Conta Azul Pro, Omie, Odoo Inventory e ERPNext. A seleção reúne produtos com documentação em português voltada ao mercado brasileiro e plataformas com documentação técnica internacional. O critério foi a disponibilidade de fontes oficiais sobre controle de estoques, permitindo examinar recursos sem atribuir participação de mercado ou superioridade aos produtos selecionados. Trata-se de uma amostra intencional, não de um inventário exaustivo das soluções disponíveis.
+
+As informações correspondem aos recursos anunciados ou documentados pelos fornecedores na data da consulta. Não executei testes nesses produtos. Para serviços atualizados continuamente, a data de consulta identifica o recorte; no Odoo, a documentação de reposição utilizada corresponde à versão 19. A disponibilidade de uma função pode depender de edição, plano, módulo ou integração. Não se presume que todos os recursos estejam incluídos em uma única contratação.
+
+\subsection{Bling}
+
+O Bling apresenta o estoque integrado à operação comercial. Sua página oficial descreve múltiplos depósitos, transferências, conferência de entradas e saídas, inventário, atualização por notas fiscais e sincronização com lojas virtuais e marketplaces. Também documenta lotes e validades, reserva de estoque, alertas de quantidade mínima, ordens de compra e relatórios de movimentação, curva ABC, saldos por depósito e valores de estoque \cite{BlingEstoque}.
+
+Nesta pesquisa, considero o Bling uma referência de integração entre estoque e canais de venda. A implicação para o Estoque Fácil é que cadastros, alertas e histórico não podem ser apresentados como novidades isoladas. O recorte proposto deverá ser justificado pela adequação às operações internas selecionadas, enquanto sincronização comercial e expedição permanecem fora da avaliação inicial.
+
+\subsection{Conta Azul Pro}
+
+A central de ajuda da Conta Azul Pro descreve consulta de saldos, histórico por produto, exportação de dados e inventários físicos. As movimentações manuais abrangem entradas, saídas, transferências entre locais e ajustes de custo médio. A documentação também relaciona cadastros de produtos, tabelas de preços, marcas, unidades de medida, categorias e locais de estoque, além de configurações de permissões \cite{ContaAzulEstoque}.
+
+A solução demonstra que movimentação manual e conferência física também fazem parte de produtos de gestão empresarial. Assim, a possibilidade de registrar uma saída sem originá-la em uma venda não será considerada exclusiva do Estoque Fácil. No TCC II, examinarei a adequação do vínculo entre retirada, setor e funcionário ao cenário interno escolhido.
+
+\subsection{Omie}
+
+A Omie descreve um sistema online que integra movimentações de estoque a compras, vendas, produção e financeiro. Entre os recursos informados estão entrada de nota fiscal de compra, posição de estoque por período, relatórios, giro e curva ABC. A integração com operações de loja física e canais digitais é apresentada por meio do Omie.PDV Varejo e do Omie.Hub; a própria fonte informa que esses componentes dependem de contratação \cite{OmieEstoque}.
+
+Na comparação, identifiquei um escopo empresarial mais amplo que o definido para o Estoque Fácil. Isso constitui uma diferença de abrangência, sem demonstrar que um produto seja mais difícil de utilizar ou mais caro em um cenário equivalente. O projeto não pretende reproduzir o conjunto fiscal, financeiro e comercial da Omie.
+
+\subsection{Odoo Inventory}
+
+O Odoo Inventory apresenta locais e múltiplos armazéns, recebimentos, transferências, ajustes de inventário, códigos de barras, lotes, números de série e datas de validade. A página de funcionalidades também descreve rastreamento de movimentações e integrações com outros aplicativos. As regras de reposição incluem limites mínimos e máximos e acionamento de compras, transferências ou produção, conforme a configuração \cite{OdooInventoryFeatures,OdooReposicao}.
+
+Essa abrangência impede tratar rastreabilidade, reposição ou organização por locais como diferenciais exclusivos do Estoque Fácil. Utilizarei na comparação apenas as funções pertinentes ao escopo escolhido e registrarei as dependências de configuração e módulos. A apresentação comercial agregada não será interpretada como comprovação de disponibilidade de todas as funções em qualquer edição.
+
+\subsection{ERPNext}
+
+A documentação do módulo de estoque do ERPNext apresenta acompanhamento de quantidades e armazéns, cadastro e classificação de itens, recebimentos, entregas, transferências, reconciliação física e relatórios de quantidades e avaliação do estoque \cite{ERPNextStock}. A solução serve como referência para relacionar movimentação, conferência e informação gerencial em um mesmo sistema.
+
+Neste estudo, concentrarei a comparação com o ERPNext nesses processos. Não se pressupõe que uma aplicação desenvolvida para o TCC seja funcionalmente mais abrangente. A contribuição pretendida está na delimitação e na avaliação de um conjunto de operações adequado ao contexto selecionado.
+
+\subsection{Síntese dos recursos documentados}
+
+Na Tabela~\ref{tab:solucoes}, utilizo critérios comuns e distingo a evidência documental dos fornecedores da inspeção estática do protótipo Estoque Fácil. A marcação D significa recurso descrito na fonte oficial; I significa estrutura correspondente identificada no código local, ainda sem comprovação por teste neste levantamento; NV significa não verificado nas fontes selecionadas. NV não equivale à inexistência do recurso.
+
+\begin{table}[htb]
+\centering
+\caption{Comparação documental de recursos de estoque}
+\label{tab:solucoes}
+\small
+\begin{tabular}{p{0.38\textwidth}ccccc c}
+\hline
+\textbf{Recurso} & \textbf{B} & \textbf{C} & \textbf{M} & \textbf{O} & \textbf{E} & \textbf{EF} \\ \hline
+Entradas e saídas & D & D & D & D & D & I \\ \hline
+Consulta de posição ou saldo & D & D & D & D & D & I \\ \hline
+Inventário físico ou reconciliação & D & D & NV & D & D & I \\ \hline
+Lotes e validades & D & NV & NV & D & NV & I \\ \hline
+Reposição por limite mínimo & D & NV & NV & D & NV & I \\ \hline
+Saída vinculada a setor e funcionário & NV & NV & NV & NV & NV & I \\ \hline
+\end{tabular}
+\par\smallskip
+\begin{minipage}{0.97\textwidth}
+\footnotesize B: Bling; C: Conta Azul Pro; M: Omie; O: Odoo; E: ERPNext; EF: Estoque Fácil. D: documentado; I: identificado no código; NV: não verificado. As marcações não constituem uma pontuação de qualidade.\par
+Fonte: elaboração própria a partir de \cite{BlingEstoque,ContaAzulEstoque,OmieEstoque,OdooInventoryFeatures,ERPNextStock,EstoqueFacilRepositorio}.
+\end{minipage}
+\end{table}
+
+A linha referente a setor e funcionário representa uma necessidade específica do projeto. Sua ausência de confirmação nas páginas consultadas não permite afirmar que os concorrentes sejam incapazes de atendê-la por configuração, extensão ou outros módulos. Também não se equiparam setor de consumo, depósito físico e empresa: são dimensões organizacionais distintas que precisam ser consideradas na comparação.
+
+\subsection{Recursos que identifiquei no protótipo Estoque Fácil}
+
+Ao inspecionar a referência local do repositório do protótipo que venho desenvolvendo, identifiquei registros de saída associados a setor, funcionário, responsável e motivo em \path{app/services/estoque_service.py} e no modelo de movimentação. Também verifiquei que a rota de saída exige setor e funcionário e que o painel está definido em \path{app/routes/dashboard_routes.py}. Utilizo esses elementos para fundamentar o foco proposto no acompanhamento do consumo interno \cite{EstoqueFacilRepositorio}. Contudo, não considero a presença desses campos e validações como prova de completude dos registros, correção dos filtros ou segurança das permissões.
+
+Na mesma inspeção, identifiquei serviços de inventário, consulta de lotes e validades e geração de rascunhos de reposição. Implementei no serviço de inventário ajustes associados à contagem física; no serviço de reposição, a versão examinada agrupa itens por fornecedor e aplica uma regra baseada no estoque mínimo. Trato essa regra como uma heurística ainda não validada, e não como modelo de previsão ou otimização de compras. Também identifiquei rotas para importar XML de NF-e como apoio à entrada de mercadorias e rotas de relatório com exportação para planilhas \cite{EstoqueFacilRepositorio}.
+
+Não apresento a importação de um documento fiscal como emissão de notas fiscais ou como módulo fiscal completo. Do mesmo modo, não interpreto a consulta de validade como comprovação de baixa automática por lote ou de estratégia de saída por vencimento. No TCC II, preservarei essas distinções ao descrever e testar a versão selecionada. Nesta etapa de TCC I, esses elementos representam funcionalidades de um protótipo em desenvolvimento, e não capacidades de um produto concluído e validado.
+
+\subsection{Diferenciais que proponho para o Estoque Fácil}
+\label{sec:diferenciais}
+
+Neste trabalho, emprego o termo diferencial para indicar uma proposta de adequação ao público e ao processo selecionados, e não uma funcionalidade necessariamente inédita no mercado. No TCC II, pretendo desenvolver e avaliar o Estoque Fácil com ênfase nos seguintes aspectos:
+
+\begin{enumerate}
+    \item \textbf{Controle de consumo interno por setor e funcionário}: consolidar o percurso entre retirada, destino organizacional e identificação do funcionário, permitindo investigar onde os materiais são consumidos. Há estrutura correspondente no código; a avaliação verificará o preenchimento, a recuperação do histórico e a coerência da visualização por setor.
+    \item \textbf{Fluxo concentrado nas operações de estoque}: oferecer cadastro, entrada, retirada, consulta e conferência sem exigir que a operação estudada percorra módulos de venda, faturamento ou contabilidade. O escopo é uma decisão do projeto. A hipótese de menor esforço de uso dependerá de avaliação específica e não será apresentada como resultado já demonstrado.
+    \item \textbf{Implantação em infraestrutura administrada pela organização}: utilizar a configuração em contêineres como base para execução em servidor próprio ou infraestrutura contratada, com controle das configurações e das rotinas de cópia de segurança. Trata-se de uma opção de implantação do projeto, não de exclusividade frente às plataformas analisadas nem de garantia de menor custo.
+    \item \textbf{Adaptação das regras com documentação verificável}: manter requisitos, decisões, código e testes relacionados para permitir ajustes de campos e regras do processo escolhido. Minha condição de desenvolvedor e meu acesso ao código viabilizam essa proposta; direitos de distribuição, licença e suporte comercial não são definidos por este TCC.
+\end{enumerate}
+
+Na Tabela~\ref{tab:diferenciais}, distingo a base já identificada das evidências ainda necessárias. Tratarei os itens como compromissos do projeto, sujeitos à avaliação da versão selecionada.
+
+\begin{table}[htb]
+\centering
+\caption{Diferenciais propostos e evidências de avaliação}
+\label{tab:diferenciais}
+\small
+\begin{tabular}{p{0.22\textwidth}p{0.32\textwidth}p{0.35\textwidth}}
+\hline
+\textbf{Proposta} & \textbf{Situação identificada} & \textbf{Verificação necessária} \\ \hline
+Consumo por setor e funcionário & Campos de saída e painel por setor presentes no código. & Registrar retiradas de setores distintos e conferir histórico, filtros e permissões. \\ \hline
+Fluxo de estoque delimitado & Cadastros, entradas, saídas e relatórios documentados. & Executar o fluxo completo sem uma operação de venda ou faturamento. \\ \hline
+Implantação administrável & Arquivos Compose e serviço de backup presentes. & Reconstruir o ambiente e restaurar uma cópia em banco isolado. \\ \hline
+Adaptação rastreável & Código disponível na cópia local; documentação em consolidação. & Vincular uma alteração de regra ao requisito, à decisão e ao teste de regressão. \\ \hline
+\end{tabular}
+\par\smallskip
+{\footnotesize Fonte: elaboração própria a partir da inspeção de \cite{EstoqueFacilRepositorio} e do protocolo proposto.}
+\end{table}
+
+Recursos como alertas, histórico, inventário, lotes e exportação complementam a proposta, mas não os apresentarei como inovação exclusiva. Permanecem fora da contribuição inicial a integração ampla com marketplaces, a emissão fiscal, o gerenciamento financeiro e as rotinas logísticas avançadas. Para organizações que necessitem desses processos, as soluções integradas poderão ser mais adequadas; incluirei essa possibilidade na discussão das limitações.
+
+Não se afirma, neste estágio, que o Estoque Fácil seja mais barato, mais seguro, mais rápido ou mais fácil de utilizar. Como resultado do TCC II, espero obter uma versão de escopo delimitado cuja adequação possa ser demonstrada por requisitos e testes. A confirmação de demanda regional e de benefícios percebidos por empresas exigirá evidências adicionais do contexto de uso. A análise de produtos aqui apresentada é documental e não substitui uma revisão de pesquisas acadêmicas relacionadas.
+
+A literatura metodológica de Runeson e Höst situa o estudo de caso como uma forma de investigar fenômenos de engenharia de software em seu contexto \cite{RunesonHost2009}. Essa perspectiva orienta o capítulo seguinte: examinarei o protótipo em conjunto com seus documentos, decisões e registros de avaliação, preservando as limitações de um caso único.
